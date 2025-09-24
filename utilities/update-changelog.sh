@@ -64,7 +64,7 @@ done
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 # Obtener commits no merge de la rama actual en la última semana
-remote_commits=$(git log origin/"$current_branch" --since="1 week ago" --no-merges --pretty=format:"%H" --grep="Version" --grep="readme" --invert-grep)
+remote_commits=$(git log origin/"$current_branch" --first-parent --since="1 hour ago" --no-merges --pretty=format:"%H" --grep="Version" --grep="readme" --invert-grep)
 
 for commit_hash in $remote_commits; do
   commit_msg=$(git log -1 --pretty=%B "$commit_hash")
