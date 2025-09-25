@@ -19,7 +19,6 @@ increment_version() {
 }
 
 merge_commits=$(git log --since="1 week ago" --merges --pretty=format:"%H")
-
 merge_entries=()
 has_new_merges=false
 
@@ -27,32 +26,29 @@ has_new_merges=false
 for commit_hash in $merge_commits; do
   merge_msg=$(git log -1 --pretty=%B $commit_hash)
   if echo "$merge_msg" | grep -q "CHAPQA"; then
-    
     chapqa_code=$(echo "$merge_msg" | grep -oE "CHAPQA-[0-9]+")
-    
     if [[ -z "$chapqa_code" ]]; then
       echo "[WARN] Commit $commit_hash contiene 'CHAPQA' pero no tiene código CHAPQA válido. Se ignora."
       continue
     fi
-    
+
     branch_name=$(echo "$merge_msg" | grep -oP "branch '\K[^']+" || echo "rama_desconocida")
-    
     IFS='/' read -r prefix chapqa_code_branch branch_part <<< "$branch_name"
     if [[ -z "$branch_part" ]]; then
       branch_part="$chapqa_code_branch"
       chapqa_code_branch=""
     fi
+
     formatted_branch=$(echo "$branch_part" | sed -r 's/([a-z])([A-Z])/\1 \2/g' | sed -r 's/\b(.)/\U\1/g')
-    
     entry="- $formatted_branch ($chapqa_code)"
-    
+
     if grep -q "$chapqa_code" "$CHANGELOG"; then
       echo "[INFO] La entrada con código '$chapqa_code' ya existe en el changelog. Saltando..."
       continue
     else
       echo "[INFO] Nueva entrada detectada: '$entry'. Se añadirá al changelog."
     fi
-    
+
     merge_entries+=("$entry")
     has_new_merges=true
   else
@@ -69,7 +65,6 @@ remote_commits=$(git log origin/"$current_branch" --first-parent --since="1 hour
 for commit_hash in $remote_commits; do
   commit_msg=$(git log -1 --pretty=%B "$commit_hash")
   commit_msg_first_line=$(echo "$commit_msg" | head -1 | sed 's/^- *//')
-  
   if grep -qF "$commit_msg_first_line" "$CHANGELOG"; then
     echo "[INFO] El commit $commit_hash ya está en el changelog. No se añade."
   else
@@ -82,9 +77,8 @@ done
 if $has_new_merges; then
   version=$(increment_version)
   date=$(date +%F)
-  
   new_entry="### [$version] - $date"$'\n\n'"$(printf '%s\n' "${merge_entries[@]}")"
-  
+
   tmpfile=$(mktemp)
   awk -v new_entry="$new_entry" '
     $0 == "## Non-Prod Environment" {
@@ -95,9 +89,23 @@ if $has_new_merges; then
     }
     { print }
   ' "$CHANGELOG" > "$tmpfile" && mv "$tmpfile" "$CHANGELOG"
-  
+
   echo "Agregado al changelog la versión $version con las siguientes entradas:"
   printf '%s\n' "${merge_entries[@]}"
+
+  # Comprobar si realmente hay cambios en el archivo y crear commit
+  if git diff --quiet -- "$CHANGELOG"; then
+    echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+  else
+    git add "$CHANGELOG"
+    if git commit -m "readme: changelog update"; then
+      echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
+    else
+      echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
+    fi
+    # Opcional: descomenta la siguiente línea si quieres pushear automáticamente
+    # git push origin "$current_branch"
+  fi
 else
   echo "No hay merges nuevos para añadir al changelog."
 fi
