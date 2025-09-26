@@ -60,7 +60,7 @@ done
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 # Obtener commits no merge de la rama actual en la última semana
-remote_commits=$(git log origin/"$current_branch" --first-parent --since="1 hour ago" --no-merges --pretty=format:"%H" --grep="Version" --grep="readme" --invert-grep)
+remote_commits=$(git log origin/"$current_branch" --first-parent --since="1 day ago" --no-merges --pretty=format:"%H" --grep="Version" --grep="readme" --invert-grep)
 
 for commit_hash in $remote_commits; do
   commit_msg=$(git log -1 --pretty=%B "$commit_hash")
@@ -92,20 +92,21 @@ if $has_new_merges; then
 
   echo "Agregado al changelog la versión $version con las siguientes entradas:"
   printf '%s\n' "${merge_entries[@]}"
+  fi
 
   # Comprobar si realmente hay cambios en el archivo y crear commit
-  if git diff --quiet -- "$CHANGELOG"; then
-    echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
-  else
-    git add "$CHANGELOG"
-    if git commit -m "readme: changelog update"; then
-      echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
-    else
-      echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
-    fi
-    # Opcional: descomenta la siguiente línea si quieres pushear automáticamente
-    # git push origin "$current_branch"
-  fi
-else
-  echo "No hay merges nuevos para añadir al changelog."
-fi
+# if git diff --quiet -- "$CHANGELOG"; then
+#     echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+#   else
+#     git add "$CHANGELOG"
+#     if git commit -m "readme: changelog update"; then
+#       echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
+#     else
+#       echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
+#     fi
+#     # Opcional: descomenta la siguiente línea si quieres pushear automáticamente
+#     # git push origin "$current_branch"
+#   fi
+# else
+#   echo "No hay merges nuevos para añadir al changelog."
+# fi
