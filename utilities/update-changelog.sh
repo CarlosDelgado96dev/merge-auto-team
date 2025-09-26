@@ -139,9 +139,47 @@ else
 fi
 
 versionMaster=$(get_version_from_branch "master")
-echo "Version master $versionMaster"
+
 
 versionMaintenance=$(get_version_from_branch "maintenance")
+
+
+normalize() { printf '%s' "${1#v}" | tr -d '[:space:]'; }
+versionMaster=$(normalize "$versionMaster")
+echo "Version master $versionMaster"
+versionMaintenance=$(normalize "$versionMaintenance")
 echo "Version master $versionMaintenance"
 
 
+version_le() {
+  local a="$1" b="$2"
+
+
+  if command -v dpkg >/dev/null 2>&1; then
+    dpkg --compare-versions "$a" le "$b"
+    return $?
+  fi
+
+ 
+  [ "$a" = "$b" ] && return 0
+  if [ "$(printf '%s\n%s\n' "$a" "$b" | sort -V | head -n1)" = "$a" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+
+# If: si versionMaster <= versionMaintenance, mostrar fecha y ejecutar npm
+if version_le "$versionMaster" "$versionMaintenance"; then
+  echo "Version Master ($versionMaster) es menor o igual que Version Maintenance ($versionMaintenance)"
+
+  # obtener fecha en formato dd/MM
+  fecha="$(date +'%d/%m')"
+  echo "$fecha"
+
+  # ejecutar npm version patch con mensaje que incluye la fecha y capturar la salida
+  npm_output="$(npm version patch -m "Version %s - $fecha")"
+  echo "$npm_output"
+fi
+  
