@@ -95,18 +95,18 @@ if $has_new_merges; then
   fi
 
   # Comprobar si realmente hay cambios en el archivo y crear commit
-# if git diff --quiet -- "$CHANGELOG"; then
-#     echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
-#   else
-#     git add "$CHANGELOG"
-#     if git commit -m "readme: changelog update"; then
-#       echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
-#     else
-#       echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
-#     fi
-#     # Opcional: descomenta la siguiente línea si quieres pushear automáticamente
-#     # git push origin "$current_branch"
-#   fi
-# else
-#   echo "No hay merges nuevos para añadir al changelog."
-# fi
+ if git diff --quiet -- "$CHANGELOG"; then
+     echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+   else
+     git add "$CHANGELOG"
+     if git commit -m "readme: changelog update"; then
+       echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
+     else
+       echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
+     fi
+     # Opcional: descomenta la siguiente línea si quieres pushear automáticamente
+     # git push origin "$current_branch"
+   fi
+ else
+   echo "No hay merges nuevos para añadir al changelog."
+ fi
