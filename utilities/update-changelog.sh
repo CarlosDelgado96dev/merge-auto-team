@@ -74,7 +74,7 @@ for commit_hash in $remote_commits; do
   fi
 done
 
-if $has_new_merges; then
+if [ "$has_new_merges"] ; then
   version=$(increment_version)
   date=$(date +%F)
   new_entry="### [$version] - $date"$'\n\n'"$(printf '%s\n' "${merge_entries[@]}")"
@@ -92,21 +92,20 @@ if $has_new_merges; then
 
   echo "Agregado al changelog la versión $version con las siguientes entradas:"
   printf '%s\n' "${merge_entries[@]}"
-  fi
 
   # Comprobar si realmente hay cambios en el archivo y crear commit
- if git diff --quiet -- "$CHANGELOG"; then
-     echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
-   else
-     git add "$CHANGELOG"
-     if git commit -m "readme: changelog update"; then
-       echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
-     else
-       echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
-     fi
-     # Opcional: descomenta la siguiente línea si quieres pushear automáticamente
-     # git push origin "$current_branch"
-   fi
- else
-   echo "No hay merges nuevos para añadir al changelog."
- fi
+  if git diff --quiet -- "$CHANGELOG"; then
+    echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+  else
+    git add "$CHANGELOG"
+    if git commit -m "readme: changelog update"; then
+      echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
+    else
+      echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
+    fi
+    # Opcional: descomenta la siguiente línea si quieres pushear automáticamente
+    # git push origin "$current_branch"
+  fi
+else
+  echo "No hay merges nuevos para añadir al changelog."
+fi
