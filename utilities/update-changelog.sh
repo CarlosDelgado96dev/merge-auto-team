@@ -128,11 +128,11 @@ if $has_new_merges ; then
     echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
   else
     git add "$CHANGELOG"
-    # git commit -m "readme: changelog update"
-    # echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
-    # Si quieres puedes descomentar las líneas anteriores para habilitar el commit
-    # else
-    # echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
+    git commit -m "readme: changelog update"
+    echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
+    Si quieres puedes descomentar las líneas anteriores para habilitar el commit
+    else
+    echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
   fi
 else
   echo "No hay merges nuevos para añadir al changelog."
