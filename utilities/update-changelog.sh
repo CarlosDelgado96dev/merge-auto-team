@@ -193,7 +193,7 @@ if version_le "$versionMaster" "$versionMaintenance"; then
   # hacer merge con la rama maintenance, aquí se puede elegir si hacer fast-forward o --no-ff
   # para mantener un historial claro, uso --no-ff
   echo "Uniendo la rama maintenance a master con merge --no-ff..."
-  git merge --no-ff maintenance
+  git merge maintenance
   
   # push de master con tags y merge
   echo "Enviando cambios de master y etiquetas al repositorio remoto..."
