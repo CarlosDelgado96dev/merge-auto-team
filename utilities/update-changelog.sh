@@ -181,5 +181,24 @@ if version_le "$versionMaster" "$versionMaintenance"; then
   # ejecutar npm version patch con mensaje que incluye la fecha y capturar la salida
   npm_output="$(npm version patch -m "Version %s - $fecha")"
   echo "$npm_output"
+
+  # pusheamos con follow-tags
+  push_follow="$(git push origin --follow-tags)"
+  echo "$push_follow"
+
+  # ir a la rama master
+  echo "Cambiando a la rama master..."
+  git checkout master
+  
+  # hacer merge con la rama maintenance, aquí se puede elegir si hacer fast-forward o --no-ff
+  # para mantener un historial claro, uso --no-ff
+  echo "Uniendo la rama maintenance a master con merge --no-ff..."
+  git merge --no-ff maintenance
+  
+  # push de master con tags y merge
+  echo "Enviando cambios de master y etiquetas al repositorio remoto..."
+  git push
+
 fi
+
   
