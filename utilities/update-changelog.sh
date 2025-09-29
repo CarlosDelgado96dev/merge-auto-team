@@ -124,16 +124,16 @@ if $has_new_merges ; then
   printf '%s\n' "${merge_entries[@]}"
 
   # Comprobar si realmente hay cambios en el archivo y crear commit
-  if git diff --quiet -- "$CHANGELOG"; then
-    echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
-  else
-    git add "$CHANGELOG"
-    git commit -m "readme: changelog update"
+ if git diff --quiet -- "$CHANGELOG"; then
+  echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+else
+  git add "$CHANGELOG"
+  if git commit -m "readme: changelog update"; then
     echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
-    Si quieres puedes descomentar las líneas anteriores para habilitar el commit
-    else
+  else
     echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
   fi
+fi
 else
   echo "No hay merges nuevos para añadir al changelog."
 fi
