@@ -192,7 +192,7 @@ if version_le "$versionMaster" "$versionMaintenance"; then
   
  echo "Uniendo la rama maintenance a master con merge --no-ff y estrategia 'theirs' para conflictos..."
 # Intento de merge preferiendo los cambios de maintenance en los hunks en conflicto
-if git merge --no-ff -s recursive -X theirs maintenance -m "Merge maintenance into master (automated, prefer maintenance on conflicts)"; then
+if git merge --no-ff -s recursive -X theirs maintenance -m "Merge maintenance into master "; then
   echo "[INFO] Merge completado automáticamente (se han preferido los cambios de maintenance en los hunks en conflicto)."
 else
   echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de maintenance en los archivos en conflicto."
@@ -205,7 +205,7 @@ else
     git checkout --theirs -- .
     # Añadir los cambios y finalizar el merge
     git add -A
-    if git commit -m "Merge maintenance into master (force theirs to resolve conflicts)"; then
+    if git commit -m "Merge maintenance into master "; then
       echo "[INFO] Conflictos resueltos: se ha commiteado tomando las versiones de maintenance."
     else
       echo "[ERROR] Falló el commit tras forzar 'theirs'. Revisa manualmente el repo."
