@@ -190,10 +190,34 @@ if version_le "$versionMaster" "$versionMaintenance"; then
   echo "Cambiando a la rama master..."
   git checkout master
   
-  # hacer merge con la rama maintenance, aquí se puede elegir si hacer fast-forward o --no-ff
-  # para mantener un historial claro, uso --no-ff
-  echo "Uniendo la rama maintenance a master con merge --no-ff..."
-  git merge maintenance
+ echo "Uniendo la rama maintenance a master con merge --no-ff y estrategia 'theirs' para conflictos..."
+# Intento de merge preferiendo los cambios de maintenance en los hunks en conflicto
+if git merge --no-ff -s recursive -X theirs maintenance -m "Merge maintenance into master (automated, prefer maintenance on conflicts)"; then
+  echo "[INFO] Merge completado automáticamente (se han preferido los cambios de maintenance en los hunks en conflicto)."
+else
+  echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de maintenance en los archivos en conflicto."
+
+  # Comprobar si existen archivos en conflicto
+  conflict_files_count=$(git ls-files -u | awk '{print $4}' | sort -u | wc -l)
+  if [[ "$conflict_files_count" -gt 0 ]]; then
+    echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de maintenance..."
+    # Tomar la versión 'theirs' (la rama que se está integrando: maintenance)
+    git checkout --theirs -- .
+    # Añadir los cambios y finalizar el merge
+    git add -A
+    if git commit -m "Merge maintenance into master (force theirs to resolve conflicts)"; then
+      echo "[INFO] Conflictos resueltos: se ha commiteado tomando las versiones de maintenance."
+    else
+      echo "[ERROR] Falló el commit tras forzar 'theirs'. Revisa manualmente el repo."
+      exit 1
+    fi
+  else
+    echo "[ERROR] No se detectaron archivos en conflicto tras el intento de merge. Se abortará el merge para evitar estado inconsistente."
+    git merge --abort || true
+    exit 1
+  fi
+fi
+
   
   # push de master con tags y merge
   echo "Enviando cambios de master y etiquetas al repositorio remoto..."
