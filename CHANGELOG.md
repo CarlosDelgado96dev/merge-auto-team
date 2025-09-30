@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.4] - 2025-09-30
+
+- Change Adress On Users Prod (CHAPQA-1444)
+
 ### [1.9.0] - 2025-09-24
 
 - Merges 1.8.8 hot-fix
