@@ -221,5 +221,14 @@ fi
   git push
 
 fi
+  
+  echo "Cambiando a la rama develop para propagar los cambios"
+
+if git checkout develop; then
+  echo "Cambio a develop correcto"
+else
+  echo "Error al cambiar a develop"
+  exit 1
+fi
 
   
