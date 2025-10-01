@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.11] - 2025-10-01
+
+- integrate the V final for the complete m
+
 ### [1.9.10] - 2025-10-01
 
 - Update the script for the correct mg in develop
