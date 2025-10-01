@@ -256,4 +256,8 @@ else
     exit 1
   fi
 fi
-  
+  echo "Pusheando cambios en develop"
+  if git push; then
+  echo "Push correcto a origin/develop"
+  else
+  echo "Error al pushear a origin/develop"
