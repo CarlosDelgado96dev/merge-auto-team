@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.9] - 2025-10-01
+
+- FIX: Correctly complete MG
+
 ### [1.9.8] - 2025-10-01
 
 - create the update changelog 2 for test
