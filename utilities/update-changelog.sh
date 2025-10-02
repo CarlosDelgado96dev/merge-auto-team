@@ -87,7 +87,7 @@ for commit_hash in $merge_commits; do
 done
 
 # Obtener commits no merge de la rama actual en la última semana
-remote_commits=$(git log origin/maintenance --first-parent --since="1 day ago" --no-merges --pretty=format:"%H" --grep='Version [0-9]\+\.[0-9]\+\.[0-9]\+ - [0-9]\{2\}/[0-9]\{2\}' --grep="readme" --grep="Merge branch" --invert-grep)
+remote_commits=$(git log origin/maintenance --first-parent --since="1 week ago" --no-merges --pretty=format:"%H" --grep='Version [0-9]\+\.[0-9]\+\.[0-9]\+ - [0-9]\{2\}/[0-9]\{2\}' --grep="readme" --grep="Merge branch" --invert-grep)
 
 for commit_hash in $remote_commits; do
   commit_msg=$(git log -1 --pretty=%B "$commit_hash")
