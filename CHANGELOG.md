@@ -7,12 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
-### [1.9.13] - 2025-10-02
-
-- UPDATE: fix the correct commit add to changelog
-- FIX: update the search image in the script
-- UPDATE: change script for the correct Version maintenance
-
 ### [1.9.11] - 2025-10-01
 
 - integrate the V final for the complete m
