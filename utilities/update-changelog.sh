@@ -145,7 +145,7 @@ normalize() { printf '%s' "${1#v}" | tr -d '[:space:]'; }
 versionMaster=$(normalize "$versionMaster")
 echo "Version master $versionMaster"
 versionMaintenance=$(normalize "$versionMaintenance")
-echo "Version master $versionMaintenance"
+echo "Version maintenance $versionMaintenance"
 
 
 version_le() {
