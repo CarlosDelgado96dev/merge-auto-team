@@ -90,7 +90,7 @@ done
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 # Obtener commits no merge de la rama actual en la última semana
-remote_commits=$(git log origin/maintenance --first-parent --since="1 day ago" --no-merges --pretty=format:"%H" --grep='Version [0-9]\+\.[0-9]\+\.[0-9]\+ - [0-9]\{2\}/[0-9]\{2\}' --grep="readme" --grep="Merge branch" --invert-grep)
+remote_commits=$(git log origin/maintenance --first-parent --since="1 week ago" --no-merges --pretty=format:"%H" --grep='Version [0-9]\+\.[0-9]\+\.[0-9]\+ - [0-9]\{2\}/[0-9]\{2\}' --grep="readme" --grep="Merge branch" --invert-grep)
 
 
 for commit_hash in $remote_commits; do
@@ -127,6 +127,7 @@ if $has_new_merges ; then
   # Comprobar si realmente hay cambios en el archivo y crear commit
  if git diff --quiet -- "$CHANGELOG"; then
   echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+  exit 0  # Finaliza el script si no hay cambios
 else
   git add "$CHANGELOG"
 fi
