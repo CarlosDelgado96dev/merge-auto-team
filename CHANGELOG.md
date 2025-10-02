@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.15] - 2025-10-02
+
+- UPDATE:  update the two changelog for the test
+
 ### [1.9.14] - 2025-10-02
 
 - Update Script Correctly Return (CHAPQA-1445)
