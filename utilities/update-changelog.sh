@@ -123,6 +123,7 @@ if $has_new_merges ; then
   # Comprobar si realmente hay cambios en el archivo y crear commit
  if git diff --quiet -- "$CHANGELOG"; then
   echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+  return 0
 else
   git add "$CHANGELOG"
   if git commit -m "readme: changelog update"; then
