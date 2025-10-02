@@ -200,6 +200,22 @@ else
     echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de maintenance..."
     # Tomar la versión 'theirs' (la rama que se está integrando: maintenance)
     git checkout --theirs -- .
+
+    image_files=$(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
+
+    if [[ -n "$image_files" ]]; then
+      echo "[INFO] Se detectaron archivos relacionados con IMAGE (Docker). Se aplicará manejo especial."
+      # Aquí decides qué hacer, por ejemplo, descartar cambios en esos archivos y mantener versión master
+      # O eliminarlos si quieres (descomentar según necesidad)
+
+      # Mantener la versión de master (HEAD) para esos archivos
+      git checkout HEAD -- $image_files
+
+      # Alternativamente, para eliminarlos del índice y del working tree, usar:
+      # git rm --cached --ignore-unmatch $image_files
+      # rm -f $image_files
+    fi
+
     # Añadir los cambios y finalizar el merge
     git add -A
     if git commit -m "Merge maintenance into master "; then
@@ -242,6 +258,24 @@ else
     echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de master..."
     # Tomar la versión 'theirs' (la rama que se está integrando: master)
     git checkout --theirs -- .
+
+    # Comprobar si existe algún archivo de tipo IMAGE (Docker image)
+    # Ejemplo: archivos Dockerfile o archivos tar típicos de imágenes docker si los usas en repo
+    image_files=$(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
+
+    if [[ -n "$image_files" ]]; then
+      echo "[INFO] Se detectaron archivos relacionados con IMAGE (Docker). Se aplicará manejo especial."
+      # Aquí decides qué hacer, por ejemplo, descartar cambios en esos archivos y mantener versión master
+      # O eliminarlos si quieres (descomentar según necesidad)
+
+      # Mantener la versión de master (HEAD) para esos archivos
+      git checkout HEAD -- $image_files
+
+      # Alternativamente, para eliminarlos del índice y del working tree, usar:
+      # git rm --cached --ignore-unmatch $image_files
+      # rm -f $image_files
+    fi
+
     # Añadir los cambios y finalizar el merge
     git add -A
     if git commit -m "Merge master into develop"; then
