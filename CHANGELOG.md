@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.18] - 2025-10-03
+
+- MOD: modify message commit
+- ADD: add pre commit to the project
+- ADD: add git commands to the project
+
 ### [1.9.17] - 2025-10-03
 
 - ADD: exit 0 to real uplog
