@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.21] - 2025-10-03
+
+- ADD: add Husky to the project
+
 ### [1.9.20] - 2025-10-03
 
 - TEST: proove the corretch merge after merge without develop
