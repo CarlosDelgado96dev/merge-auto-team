@@ -187,7 +187,8 @@ if version_le "$versionMaster" "$versionMaintenance"; then
   # ir a la rama master
   echo "Cambiando a la rama master..."
   git checkout master
-  
+  git pull
+  echo "Hacemos git pull desde master"
  echo "Uniendo la rama maintenance a master con merge --no-ff y estrategia 'theirs' para conflictos..."
 # Intento de merge preferiendo los cambios de maintenance en los hunks en conflicto
 if git merge --no-ff -s recursive -X theirs maintenance -m "Merge maintenance into master "; then
@@ -248,6 +249,7 @@ else
   exit 1
 fi
   git pull
+  echo "Hacemos git pull desde develop"
 if git merge --no-ff -s recursive -X theirs master -m "Merge master into develop"; then
   echo "[INFO] Merge completado automáticamente (se han preferido los cambios de master en los hunks en conflicto)."
 else
