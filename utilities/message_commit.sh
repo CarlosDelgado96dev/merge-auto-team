@@ -3,30 +3,18 @@ set -euo pipefail
 
 MSG="${1:-hola este es un pre commit}"
 
-# Comprobar que estamos en un repo
-git rev-parse --git-dir >/dev/null 2>&1 || { echo "No es un repo git"; exit 1; }
+# Comprobar repo
+GIT_DIR=$(git rev-parse --git-dir 2>/dev/null) || { echo "No es un repo git"; exit 1; }
 
-# Stagea los cambios (como git add .)
+# Stagea todos los cambios (como git add .)
 git add -A
 
-# Crea un objeto tree del index actualmente staged
-TREE=$(git write-tree)
+# Usamos HEAD como MERGE_HEAD para no introducir un SHA inválido
+HEAD_SHA=$(git rev-parse HEAD)
 
-# Padre = HEAD
-PARENT=$(git rev-parse HEAD)
+# Escribimos MERGE_HEAD y MERGE_MSG para simular un merge en curso
+printf "%s\n" "$HEAD_SHA" > "$GIT_DIR/MERGE_HEAD"
+printf "%s\n" "$MSG" > "$GIT_DIR/MERGE_MSG"
 
-# Crea un commit temporal que tiene como padre a HEAD (no crea refs, solo objeto)
-COMMIT_TMP=$(echo "precommit-temp" | git commit-tree "$TREE" -p "$PARENT")
-
-# Ejecuta merge que no hace commit pero genera .git/MERGE_MSG y estado de merge
-git merge --no-ff --no-commit "$COMMIT_TMP"
-
-# Sobrescribe el mensaje de merge con el mensaje deseado
-printf "%s\n" "$MSG" > .git/MERGE_MSG
-
-# Asegura que los cambios estén staged (para que VS los muestre como listos)
-git add -A
-
-echo "Pre-commit preparado. Mensaje en .git/MERGE_MSG:"
-cat .git/MERGE_MSG
-echo "Ahora abre Visual Studio (o refresca Source Control) para ver el pre-commit."
+echo "Simulado 'merge in progress'. Mensaje escrito en $GIT_DIR/MERGE_MSG"
+echo "Ahora abre/actualiza Visual Studio Source Control para ver el pre-commit."
