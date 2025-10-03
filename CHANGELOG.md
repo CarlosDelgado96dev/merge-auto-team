@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.17] - 2025-10-03
+
+- ADD: exit 0 to real uplog
+- ADD: new exit 0 for the no changes in changelog
+- MOD: change the pull on the differents branchs
+
 ### [1.9.16] - 2025-10-02
 
 - FIX: update the script for the final version
