@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.27] - 2025-10-05
+
+- FIX: add users to prod
+
 ### [1.9.26] - 2025-10-05
 
 - FIX: modify message from maintenance
