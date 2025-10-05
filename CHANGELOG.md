@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
-### [1.9.29] - 2025-10-05
-
-- ADD: Evolution in automatic merges HUSKY
-
 ### [1.9.28] - 2025-10-05
 
 - FIX: clean the changelog for future tests
