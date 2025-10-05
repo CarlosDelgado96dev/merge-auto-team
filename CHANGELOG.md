@@ -20,10 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CHANGE TO PROOVE HUSKY
 - merge automatic from maintenance
 
-### [1.9.25] - 2025-10-05
-
-- ADD: Evolution in automatic merges HUSKY
-
 ### [1.9.24] - 2025-10-05
 
 - run script
