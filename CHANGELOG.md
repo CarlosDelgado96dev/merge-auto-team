@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.23] - 2025-10-05
+
+- queeeee
+- otro de pruebaaa
+- holaaaaa
+- modify script the message for post commit
+
+### [1.9.22] - 2025-10-05
+
+- add version to pre commit
+
 ### [1.9.21] - 2025-10-03
 
 - ADD: add Husky to the project
