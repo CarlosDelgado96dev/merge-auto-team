@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MSG="${1:-hola este es un pre commit}"
+MSG="${1:-run script}"
 
 # Comprobar repo
 GIT_DIR=$(git rev-parse --git-dir 2>/dev/null) || { echo "No es un repo git"; exit 1; }
