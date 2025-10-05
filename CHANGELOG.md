@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.26] - 2025-10-05
+
+- FIX: modify message from maintenance
+
 ### [1.9.25] - 2025-10-05
 
 - CHANGE TO PROOVE HUSKY
