@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.31] - 2025-10-06
+
+- FIX:  modify message from maintenance message
+- UPDATE: implement errors
+- UPDATE: implement script without propagating develop
+
 ### [1.9.30] - 2025-10-05
 
 - ADD: add script to npm merge maintenance
