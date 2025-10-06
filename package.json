@@ -1,6 +1,6 @@
 {
   "name": "merge-auto-team",
-  "version": "1.9.31",
+  "version": "1.9.32",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
