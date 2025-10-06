@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.33] - 2025-10-06
+
+- DELETE: delete file no develop
+- FIX: modify name the script no develop
+
 ### [1.9.32] - 2025-10-06
 
 - TEST: proove the post commit
