@@ -139,6 +139,7 @@ else
 fi
 else
   echo "No hay merges nuevos para añadir al changelog."
+  exit 0
 
 fi
 
