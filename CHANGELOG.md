@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.34] - 2025-10-08
+
+- Refactor Buttons In Spec Comercial (CHAPQA-1447)
+- Change Days To Search The Merges (CHAPQA-1446)
+- FIX: refactor the updatechangelog
+- search the commis two days
+
+### [1.9.33] - 2025-10-06
+
+- DELETE: delete file no develop
+- FIX: modify name the script no develop
+
 ### [1.9.32] - 2025-10-06
 
 - TEST: proove the post commit
