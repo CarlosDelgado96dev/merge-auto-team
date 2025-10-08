@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.35] - 2025-10-08
+
+- Refactor Test Injections (CHAPQA-1449)
+- Update Timeouts In Jazztel Specs (CHAPQA-1448)
+- FIX: update the users passwords
+
 ### [1.9.34] - 2025-10-08
 
 - Refactor Buttons In Spec Comercial (CHAPQA-1447)
