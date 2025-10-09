@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.4] - 2025-10-09
+
+- TEST proove hot-fix post merge
+
 ### [1.9.3] - 2025-10-09
 
 - TEST: add message merge to the project
