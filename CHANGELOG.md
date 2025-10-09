@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.2] - 2025-10-09
+
+- Revert "FIX: modify the principal script"
+- FIX: modify the principal script
+
 ### [1.9.1] - 2025-10-09
 
 - FIX: update the final script to correct merge
