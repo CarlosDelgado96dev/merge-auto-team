@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.3] - 2025-10-09
+
+- TEST: add message merge to the project
+
 ### [1.9.2] - 2025-10-09
 
 - Revert "FIX: modify the principal script"
