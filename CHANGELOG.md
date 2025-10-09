@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.1] - 2025-10-09
+
+- FIX: update the final script to correct merge
+- add script to merge with produccion
+- add automatic message hot-fix
+
 ### [1.9.0] - 2025-10-09
 
 - New Version To Align the project
