@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "uplog": "bash ./utilities/update-changelog.sh",
-    "mergemaintenance": "bash ./utilities/automaticmerges/automatic-message-maintenance.sh"
+    "mergemaintenance": "bash ./utilities/automaticmerges/maintenance/automatic-message-maintenance.sh"
   },
   "keywords": [],
   "author": "",
