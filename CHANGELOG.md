@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.9.0] - 2025-10-09
+
+- New Version To Align the project
+
 ### [1.8.8] - 2025-09-18
 
 - Fix in function Continue Button comment changePageZoom
