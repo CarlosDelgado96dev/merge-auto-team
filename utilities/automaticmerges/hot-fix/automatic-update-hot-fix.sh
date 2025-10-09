@@ -41,8 +41,6 @@ version_le() {
 # If: si versionProd <= versionHotfix, mostrar fecha y ejecutar npm
 if version_le "$versionProd" "$versionHotfix"; then
   echo "Version Prod ($versionProd) es menor o igual que Version Maintenance ($versionProd)"
-  # ir a la rama hot-fix
-  git checkout hot-fix
 
   # obtener fecha en formato dd/MM
   fecha="$(date +'%d/%m')"
