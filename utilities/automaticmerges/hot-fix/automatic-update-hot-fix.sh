@@ -6,17 +6,17 @@
     echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
   fi
 
-versionProd=$(get_version_from_branch "master")
+versionProd=$(get_version_from_branch "prod")
 
 
-versionHotfix=$(get_version_from_branch "maintenance")
+versionHotfix=$(get_version_from_branch "hot-fix")
 
 
 normalize() { printf '%s' "${1#v}" | tr -d '[:space:]'; }
 versionProd=$(normalize "$versionProd")
-echo "Version master $versionProd"
+echo "Version produccion $versionProd"
 versionHotfix=$(normalize "$versionHotfix")
-echo "Version maintenance $versionHotfix"
+echo "Version hot-fix $versionHotfix"
 
 
 version_le() {
@@ -38,9 +38,9 @@ version_le() {
 }
 
 
-# If: si versionMaster <= versionMaintenance, mostrar fecha y ejecutar npm
+# If: si versionProd <= versionHotfix, mostrar fecha y ejecutar npm
 if version_le "$versionProd" "$versionHotfix"; then
-  echo "Version Master ($versionProd) es menor o igual que Version Maintenance ($versionProd)"
+  echo "Version Prod ($versionProd) es menor o igual que Version Maintenance ($versionProd)"
 
   # obtener fecha en formato dd/MM
   fecha="$(date +'%d/%m')"
@@ -54,7 +54,7 @@ if version_le "$versionProd" "$versionHotfix"; then
   push_follow="$(git push origin --follow-tags)"
   echo "$push_follow"
 
-  # ir a la rama master
+  # ir a la rama produccion
   echo "Cambiando a la rama produccion..."
   git checkout produccion
   git pull
@@ -104,8 +104,8 @@ else
 fi
 
   
-  # push de master con tags y merge
-  echo "Enviando cambios de master y etiquetas al repositorio remoto..."
+  # push de produccion con tags y merge
+  echo "Enviando cambios de produccion y etiquetas al repositorio remoto..."
   git push
 
 fi
