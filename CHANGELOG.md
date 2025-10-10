@@ -368,6 +368,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.9.7] - 2025-10-10
+
+- update the hot-fix-master script
+- add folder and script for merge master hot-fix
+
 ### [1.9.6] - 2025-10-10
 
 - update changelog for the final structure
