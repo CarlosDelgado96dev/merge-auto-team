@@ -372,6 +372,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.9.9] - 2025-10-10
+
+- MOD: modify script hot-fix
+
 ### [1.9.8] - 2025-10-10
 
 - Test merge with master succesfully
