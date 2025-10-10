@@ -368,6 +368,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.9.8] - 2025-10-10
+
+- Test merge with master succesfully
+
 ### [1.9.7] - 2025-10-10
 
 - update the hot-fix-master script
