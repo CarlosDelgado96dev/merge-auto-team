@@ -7,9 +7,171 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
-### [1.8.8] - 2025-09-18
+### [1.10.4] - 2025-10-10
 
-- Fix in function Continue Button comment changePageZoom
+- FIX: proove the test MERGE complete with master-hot-fix
+
+### [1.10.3] - 2025-09-24
+
+- Merges 1.10.2 hot-fix
+
+### [1.10.2] - 2025-10-09
+
+- Update Scripts For The Correct Uplog (CHAPQA-1450)
+
+### [1.10.1] - 2025-10-09
+
+- modify package.json for better estructure in the project
+- modify folder order on the project
+
+### [1.10.0] - 2025-10-09
+
+- New minor Version to Align the project
+
+### [1.9.36] - 2025-10-08
+
+- FIX: refactor the timeouts
+
+### [1.9.35] - 2025-10-08
+
+- Refactor Test Injections (CHAPQA-1449)
+- Update Timeouts In Jazztel Specs (CHAPQA-1448)
+- FIX: update the users passwords
+
+### [1.9.34] - 2025-10-08
+
+- Refactor Buttons In Spec Comercial (CHAPQA-1447)
+- Change Days To Search The Merges (CHAPQA-1446)
+- FIX: refactor the updatechangelog
+- search the commis two days
+
+### [1.9.33] - 2025-10-06
+
+- DELETE: delete file no develop
+- FIX: modify name the script no develop
+
+### [1.9.32] - 2025-10-06
+
+- TEST: proove the post commit
+
+### [1.9.31] - 2025-10-06
+
+- FIX:  modify message from maintenance message
+- UPDATE: implement errors
+- UPDATE: implement script without propagating develop
+
+### [1.9.30] - 2025-10-05
+
+- ADD: add script to npm merge maintenance
+- FIX: clean changelog
+- ADD: Evolution in automatic merges HUSKY
+
+### [1.9.28] - 2025-10-05
+
+- FIX: clean the changelog for future tests
+- Evolution HUSKY in the project
+
+### [1.9.27] - 2025-10-05
+
+- FIX: add users to prod
+
+### [1.9.26] - 2025-10-05
+
+- FIX: modify message from maintenance
+
+### [1.9.25] - 2025-10-05
+
+- CHANGE TO PROOVE HUSKY
+- merge automatic from maintenance
+
+### [1.9.24] - 2025-10-05
+
+- run script
+- run script
+- run script
+- add saludo to the project
+- prueba para cambiar script
+- run script
+
+### [1.9.23] - 2025-10-05
+
+- queeeee
+- otro de pruebaaa
+- holaaaaa
+- modify script the message for post commit
+
+### [1.9.22] - 2025-10-05
+
+- add version to pre commit
+
+### [1.9.21] - 2025-10-03
+
+- ADD: add Husky to the project
+
+### [1.9.20] - 2025-10-03
+
+- TEST: proove the corretch merge after merge without develop
+
+### [1.9.19] - 2025-10-03
+
+- ADD: implement scrip merge no develop
+
+### [1.9.18] - 2025-10-03
+
+- MOD: modify message commit
+- ADD: add pre commit to the project
+- ADD: add git commands to the project
+
+### [1.9.17] - 2025-10-03
+
+- ADD: exit 0 to real uplog
+- ADD: new exit 0 for the no changes in changelog
+- MOD: change the pull on the differents branchs
+
+### [1.9.16] - 2025-10-02
+
+- FIX: update the script for the final version
+- Version changed
+- Version fix the script
+
+### [1.9.15] - 2025-10-02
+
+- UPDATE:  update the two changelog for the test
+
+### [1.9.14] - 2025-10-02
+
+- Update Script Correctly Return (CHAPQA-1445)
+- UPDATE: fix the correct commit add to changelog
+- FIX: update the search image in the script
+- UPDATE: change script for the correct Version maintenance
+
+### [1.9.11] - 2025-10-01
+
+- integrate the V final for the complete m
+
+### [1.9.10] - 2025-10-01
+
+- Update the script for the correct mg in develop
+
+### [1.9.9] - 2025-10-01
+
+- FIX: Correctly complete MG
+
+### [1.9.8] - 2025-10-01
+
+- create the update changelog 2 for test
+
+### [1.9.5] - 2025-09-30
+
+- Change Adress On Users Prod (CHAPQA-1444)
+
+### [1.9.0] - 2025-09-24
+
+- Merges 1.8.8 hot-fix
+
+### [1.8.8] - 2025-09-24
+
+- Fix in function Continue Button comment changePageZoom (CHAPQA-1441)
 
 ### [1.8.7] - 2025-09-18
 
