@@ -214,6 +214,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.9.6] - 2025-10-10
+
+- update changelog for the final structure
+- update separate prod and non prod
+
 ### [1.9.5] - 2025-10-09
 
 - TEST: proove correct merge in master
