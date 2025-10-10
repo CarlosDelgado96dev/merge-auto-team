@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.2] - 2025-10-09
+
+- Update Scripts For The Correct Uplog (CHAPQA-1450)
+
 ### [1.10.1] - 2025-10-09
 
 - modify package.json for better estructure in the project
@@ -363,6 +367,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.9.6] - 2025-10-10
+
+- update changelog for the final structure
+- update separate prod and non prod
+
+### [1.9.5] - 2025-10-09
+
+- TEST: proove correct merge in master
+
+### [1.9.4] - 2025-10-09
+
+- TEST proove hot-fix post merge
+
+### [1.9.3] - 2025-10-09
+
+- TEST: add message merge to the project
+
+### [1.9.2] - 2025-10-09
+
+- Revert "FIX: modify the principal script"
+- FIX: modify the principal script
+
+### [1.9.1] - 2025-10-09
+
+- FIX: update the final script to correct merge
+- add script to merge with produccion
+- add automatic message hot-fix
+
+### [1.9.0] - 2025-10-09
+
+- New Version To Align the project
 
 ### [1.7.25] - 2025-09-18
 
