@@ -81,6 +81,21 @@ if git merge --no-commit -s recursive -X theirs hot-fix; then
     fi
   done
 
+  # Asegurar/Simular estado de "merge in progress": escribir MERGE_HEAD/MERGE_MSG si no existen
+  if [[ -f "$GIT_DIR/MERGE_HEAD" ]]; then
+    echo "[INFO] Ya existe un MERGE_HEAD. No se sobrescribe; se actualizará MERGE_MSG con el mensaje predeterminado."
+    printf "%s\n" "${MSG}" > "$GIT_DIR/MERGE_MSG"
+  else
+    if hotfix_sha=$(git rev-parse --verify hot-fix 2>/dev/null); then
+      printf "%s\n" "$hotfix_sha" > "$GIT_DIR/MERGE_HEAD"
+    else
+      # fallback a HEAD si no se puede resolver hot-fix
+      printf "%s\n" "$(git rev-parse HEAD)" > "$GIT_DIR/MERGE_HEAD"
+    fi
+    printf "%s\n" "${MSG}" > "$GIT_DIR/MERGE_MSG"
+    echo "[INFO] MERGE_HEAD y MERGE_MSG escritos para simular merge en curso."
+  fi
+
   echo "[NEXT] El merge está en progreso. Revisa cambios con 'git status' y 'git diff'."
   echo "Cuando estés listo, finaliza con: git commit  (o git commit -m \"Merge hot-fix into master\")"
   echo "Si quieres abortar: git merge --abort"
@@ -108,6 +123,20 @@ else
     # Marcar como resueltos (stage)
     git add -A
 
+    # Después de stagear, escribir/asegurar MERGE_HEAD y MERGE_MSG (simulación para GUI)
+    if [[ -f "$GIT_DIR/MERGE_HEAD" ]]; then
+      echo "[INFO] Ya existe un MERGE_HEAD. No se sobrescribe; se actualizará MERGE_MSG con el mensaje predeterminado."
+      printf "%s\n" "${MSG}" > "$GIT_DIR/MERGE_MSG"
+    else
+      if hotfix_sha=$(git rev-parse --verify hot-fix 2>/dev/null); then
+        printf "%s\n" "$hotfix_sha" > "$GIT_DIR/MERGE_HEAD"
+      else
+        printf "%s\n" "$(git rev-parse HEAD)" > "$GIT_DIR/MERGE_HEAD"
+      fi
+      printf "%s\n" "${MSG}" > "$GIT_DIR/MERGE_MSG"
+      echo "[INFO] MERGE_HEAD y MERGE_MSG escritos para simular merge en curso."
+    fi
+
     echo "[NEXT] Conflictos resueltos en automático (theirs) salvo los package*.json que quedaron como master."
     echo "Revisa con 'git status' y 'git diff'. Cuando estés listo, finaliza el merge con 'git commit'."
     echo "Si quieres abortar y volver al estado anterior al merge: git merge --abort"
@@ -116,4 +145,3 @@ else
     echo "Verifica el estado con 'git status' y los mensajes de error de git."
   fi
 fi
-
