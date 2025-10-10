@@ -67,74 +67,53 @@ PRE_MERGE_HEAD=$(git rev-parse HEAD)
 # Archivos que deben permanecer como en master
 KEEP_FROM_MASTER=("package.json" "package-lock.json")
 
-if git merge --no-ff -s recursive -X theirs hot-fix -m "Merge hot-fix into master"; then
-  echo "[INFO] Merge completado automáticamente (se han preferido los cambios de hot-fix en los hunks en conflicto)."
-
-  # Restaurar package files desde PRE_MERGE_HEAD y enmendar el commit de merge si hubo cambios
-  restore_needed=false
+# Ejecutar merge pero NO commitear automáticamente (dejar en estado de merge para revisar)
+if git merge --no-commit -s recursive -X theirs hot-fix; then
+  echo "[INFO] Merge aplicado (sin commit). No hubo conflictos o se resolvieron automáticamente."
+  # Restaurar package files desde PRE_MERGE_HEAD y stagearlos para que queden como en master
   for f in "${KEEP_FROM_MASTER[@]}"; do
     if git show "$PRE_MERGE_HEAD":"$f" >/dev/null 2>&1; then
       git checkout "$PRE_MERGE_HEAD" -- "$f" || true
-      restore_needed=true
+      git add "$f" || true
+      echo "[INFO] Restaurado y staged $f desde $PRE_MERGE_HEAD (master)."
     else
       echo "[DEBUG] $f no existe en $PRE_MERGE_HEAD, saltando."
     fi
   done
 
-  if $restore_needed; then
-    git add "${KEEP_FROM_MASTER[@]}" || true
-    # Solo enmendar si hay cambios staged
-    if ! git diff --cached --quiet; then
-      git commit --amend --no-edit
-      echo "[INFO] Restaurados ${KEEP_FROM_MASTER[*]} desde master y enmendado commit de merge."
-    else
-      echo "[INFO] No hubo cambios en ${KEEP_FROM_MASTER[*]} para enmendar."
-    fi
-  fi
+  echo "[NEXT] El merge está en progreso. Revisa cambios con 'git status' y 'git diff'."
+  echo "Cuando estés listo, finaliza con: git commit  (o git commit -m \"Merge hot-fix into master\")"
+  echo "Si quieres abortar: git merge --abort"
 
 else
-  echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de hot-fix excepto los package files."
+  echo "[WARN] El merge terminó con conflictos. Se intentará resolver preferiendo hot-fix excepto package files."
 
-  # Comprobar si existen archivos en conflicto
+  # Contar archivos en conflicto
   conflict_files_count=$(git ls-files -u | awk '{print $4}' | sort -u | wc -l)
   if [[ "$conflict_files_count" -gt 0 ]]; then
-    echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de hot-fix para la mayoría de archivos..."
-    # Tomar la versión 'theirs' (la rama que se está integrando: hot-fix) para todo
-    git checkout --theirs -- .
+    echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Aplicando resolución automática:"
+    # Tomar la versión 'theirs' (hot-fix) para los archivos en conflicto
+    git checkout --theirs -- . || true
 
-    # Restaurar explícitamente los package files desde HEAD (master), asegurando que queden como en master
+    # Restaurar explícitamente los package files desde PRE_MERGE_HEAD (master)
     for f in "${KEEP_FROM_MASTER[@]}"; do
-      if git show HEAD:"$f" >/dev/null 2>&1; then
-        git checkout HEAD -- "$f" || true
-        echo "[INFO] Restaurado $f desde master (HEAD)."
+      if git show "$PRE_MERGE_HEAD":"$f" >/dev/null 2>&1; then
+        git checkout "$PRE_MERGE_HEAD" -- "$f" || true
+        echo "[INFO] Restaurado $f desde $PRE_MERGE_HEAD (master)."
       else
-        echo "[DEBUG] $f no existe en master (HEAD), no se restaura."
+        echo "[DEBUG] $f no existe en $PRE_MERGE_HEAD, no se restaura."
       fi
     done
 
-    # Marcar como resueltos y crear commit de resolución
+    # Marcar como resueltos (stage)
     git add -A
 
-    # Comentar mensaje de commit de resolución; puedes ajustarlo
-    if git diff --cached --quiet; then
-      echo "[INFO] No hay cambios staged después de resolver; no se crea commit."
-    else
-      git commit -m "Resolve merge conflicts: prefer hot-fix except package.json and package-lock.json (kept from master)"
-      echo "[INFO] Conflictos resueltos y commit creado."
-    fi
-
-    # Comprobar si existe algún archivo de tipo IMAGE (Docker image) y manejarlo según tu lógica
-    image_files=$(git ls-files | grep -E '(^Dockerfile$|\.tar$)' || true)
-    if [[ -n "$image_files" ]]; then
-      echo "[INFO] Se detectaron archivos relacionados con IMAGE (Docker). Aplicando manejo especial..."
-      # Mantener la versión de master (HEAD) para esos archivos
-      git checkout HEAD -- $image_files || true
-      git add $image_files || true
-      echo "[INFO] Restauradas versiones master para archivos de imagen: $image_files"
-      # Si quieres, puedes incluirlos en el commit de resolución o crear otro commit
-    fi
-
+    echo "[NEXT] Conflictos resueltos en automático (theirs) salvo los package*.json que quedaron como master."
+    echo "Revisa con 'git status' y 'git diff'. Cuando estés listo, finaliza el merge con 'git commit'."
+    echo "Si quieres abortar y volver al estado anterior al merge: git merge --abort"
   else
-    echo "[INFO] No se detectaron archivos en conflicto por 'git ls-files -u'."
+    echo "[INFO] No se detectaron archivos en conflicto con 'git ls-files -u', pero el merge falló por otra razón."
+    echo "Verifica el estado con 'git status' y los mensajes de error de git."
   fi
 fi
+
