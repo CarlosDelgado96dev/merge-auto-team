@@ -67,6 +67,20 @@ awk -v new_entry="$new_entry" '
 echo "Agregado al changelog la versión $version con la entrada:"
 printf '%s\n' "$new_entry"
 
+if git diff --quiet -- "$CHANGELOG"; then
+  echo "[INFO] No hay cambios reales en $CHANGELOG para commitear."
+  exit 0  # Finaliza el script si no hay cambios
+else
+  git add "$CHANGELOG"
+fi
+
+ if git commit -m "readme: changelog update"; then
+    echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
+  else
+    echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
+  fi
+
+
   # ejecutar npm version patch con mensaje que incluye la fecha y capturar la salida
   npm_output="$(npm version patch -m "Version %s - $date")"
   echo "$npm_output"
