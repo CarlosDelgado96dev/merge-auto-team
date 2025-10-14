@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.6] - 2025-10-14
+
+- ADD: add update hot-fix master version semi final
+
 ### [1.10.5] - 2025-10-14
 
 - ADD: automatic update hot-fix master

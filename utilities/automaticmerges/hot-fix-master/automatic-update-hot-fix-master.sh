@@ -50,3 +50,23 @@ get_version_from_branch() {
   echo "$version"
   return 0
 }
+git checkout master
+git pull
+
+version=$(increment_version)
+  date=$(date +%F)
+  new_entry="### [$version] - $date"$'\n\n'"$(printf '%s\n' "- Merges ${version } hot-fix")"
+
+  tmpfile=$(mktemp)
+  awk -v new_entry="$new_entry" '
+    $0 == "## Non-Prod Environment" {
+      print
+      print ""
+      print new_entry
+      next
+    }
+    { print }
+  ' "$CHANGELOG" > "$tmpfile" && mv "$tmpfile" "$CHANGELOG"
+
+  echo "Agregado al changelog la versión $version con las siguientes entradas:"
+  printf '%s\n' "${new_entry}"
