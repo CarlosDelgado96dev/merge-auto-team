@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.8] - 2025-10-15
+
+- Update Scripthotfixmaster New Evolution (CHAPQA-1451)
+- UPDATE: add echo to the script for the good legibility
+
 ### [1.10.7] - 2025-10-14
 
 - Evolution update hot-fix-master final V
