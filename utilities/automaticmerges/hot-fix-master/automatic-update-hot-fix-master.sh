@@ -50,8 +50,9 @@ get_version_from_branch() {
   echo "$version"
   return 0
 }
-
+echo "Cambiando a la rama master..."
 git checkout master
+echo "git pull desde master"
 git pull
 
 version=$(increment_version)
@@ -87,3 +88,4 @@ awk -v new_entry="$new_entry" '
 
 echo "Agregado al changelog la versión $version con la entrada:"
 printf '%s\n' "$new_entry"
+
