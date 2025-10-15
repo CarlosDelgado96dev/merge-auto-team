@@ -89,3 +89,24 @@ awk -v new_entry="$new_entry" '
 echo "Agregado al changelog la versión $version con la entrada:"
 printf '%s\n' "$new_entry"
 
+echo "Se añade el changelog a staging"
+git add "$CHANGELOG"
+
+if git commit -m "readme: changelog update"; then
+    echo "[INFO] Commit creado con mensaje: 'readme: changelog update'."
+  else
+    echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
+  fi
+
+  # obtener fecha en formato dd/MM
+  fecha="$(date +'%d/%m')"
+  echo "$fecha"
+
+  # ejecutar npm version patch con mensaje que incluye la fecha y capturar la salida
+  npm_output="$(npm version patch -m "Version %s - $fecha")"
+  echo "$npm_output"
+
+  # pusheamos con follow-tags
+  push_follow="$(git push origin --follow-tags)"
+  echo "$push_follow"
+
