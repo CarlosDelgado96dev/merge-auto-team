@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.9] - 2025-10-15
+
+- Merges 1.10.9 hot-fix
+
 ### [1.10.8] - 2025-10-15
 
 - Update Scripthotfixmaster New Evolution (CHAPQA-1451)
