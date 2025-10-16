@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.12] - 2025-10-16
+
+- FIX: final version to hot-fix-master for generate the version
+
+### [1.10.11] - 2025-10-16
+
+- Merges 1.10.11 hot-fix
+
+### [1.10.10] - 2025-10-16
+
+- Update Final Merging On Hot Fix Master Generate V (CHAPQA-1452)
+
+### [1.10.9] - 2025-10-15
+
+- Merges 1.10.9 hot-fix
+
+### [1.10.8] - 2025-10-15
+
+- Update Scripthotfixmaster New Evolution (CHAPQA-1451)
+- UPDATE: add echo to the script for the good legibility
+
+### [1.10.7] - 2025-10-14
+
+- Evolution update hot-fix-master final V
+
+### [1.10.6] - 2025-10-14
+
+- ADD: add update hot-fix master version semi final
+
 ### [1.10.5] - 2025-10-14
 
 - ADD: automatic update hot-fix master
