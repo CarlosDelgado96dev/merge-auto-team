@@ -409,6 +409,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.9.10] - 2025-10-16
+
+- Update the package.json for new scripts names
+
 ### [1.9.9] - 2025-10-10
 
 - MOD: modify script hot-fix
