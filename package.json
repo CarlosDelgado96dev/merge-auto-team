@@ -8,7 +8,7 @@
     "mergemaintenance": "bash ./utilities/automaticmerges/maintenance/automatic-message-maintenance.sh",
     "mergenodevelop": "bash ./utilities/automaticmerges/nodevelop/automatic-message-nodevelop.sh",
     "mergehotfix-prod": "bash ./utilities/automaticmerges/hot-fix/automatic-message-hot-fix.sh",
-    "mergehotfix-master": "bash ./utilities/automaticmerges/hot-fix-master/automatic-message-hot-fix-master.sh"
+    "mergehotfix-master": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master.sh"
   },
   "keywords": [],
   "author": "",
