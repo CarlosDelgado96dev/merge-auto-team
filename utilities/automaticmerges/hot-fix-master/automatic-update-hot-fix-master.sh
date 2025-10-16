@@ -110,3 +110,52 @@ if git commit -m "readme: changelog update"; then
   push_follow="$(git push origin --follow-tags)"
   echo "$push_follow"
 
+# ir a la rama master
+echo "Cambiando a la rama maintenance..."
+git checkout maintenance
+git pull
+echo "Hacemos git pull desde maintenance"
+echo "Uniendo la rama master a maintenance con merge --no-ff y estrategia 'theirs' para conflictos..."
+# Intento de merge preferiendo los cambios de maintenance en los hunks en conflicto
+if git merge --no-ff -s recursive -X theirs master -m "Merge master into maintenance "; then
+  echo "[INFO] Merge completado automáticamente (se han preferido los cambios de master en los hunks en conflicto)."
+else
+  echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de master en los archivos en conflicto."
+
+  # Comprobar si existen archivos en conflicto
+  conflict_files_count=$(git ls-files -u | awk '{print $4}' | sort -u | wc -l)
+  if [[ "$conflict_files_count" -gt 0 ]]; then
+    echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de master..."
+    # Tomar la versión 'theirs' (la rama que se está integrando: maintenance)
+    git checkout --theirs -- .
+
+    image_files=$(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
+
+    if [[ -n "$image_files" ]]; then
+      echo "[INFO] Se detectaron archivos relacionados con IMAGE (Docker). Se aplicará manejo especial."
+      # Mantener la versión de master (HEAD) para esos archivos
+      git checkout HEAD -- $image_files
+
+      # Alternativamente, para eliminarlos del índice y del working tree, usar:
+      # git rm --cached --ignore-unmatch $image_files
+      # rm -f $image_files
+    fi
+
+    # Añadir los cambios y finalizar el merge
+    git add -A
+    if git commit -m "Merge master into maintenance "; then
+      echo "[INFO] Conflictos resueltos: se ha commiteado tomando las versiones de maintenance."
+    else
+      echo "[ERROR] Falló el commit tras forzar 'theirs'. Revisa manualmente el repo."
+      exit 1
+    fi
+  else
+    echo "[ERROR] No se detectaron archivos en conflicto tras el intento de merge. Se abortará el merge para evitar estado inconsistente."
+    git merge --abort || true
+    exit 1
+  fi
+fi
+
+# push de master con tags y merge
+echo "Enviando cambios de maintenance y etiquetas al repositorio remoto..."
+git push
