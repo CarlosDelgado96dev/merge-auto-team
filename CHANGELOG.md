@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.16] - 2025-10-17
+
+- Merges 1.10.15 hot-fix
+
 ### [1.10.15] - 2025-10-17
 
 - Merges 1.10.14 hot-fix
@@ -420,6 +424,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.9.11] - 2025-10-17
+
+- ADD: comand to git commands
 
 ### [1.9.10] - 2025-10-16
 
