@@ -54,10 +54,10 @@ echo "Cambiando a la rama master..."
 git checkout master
 echo "git pull desde master"
 git pull
-
+actualVersion=$(get_version_from_branch origin/master)
 version=$(increment_version)
 date=$(date +%F)
-new_entry="### [$version] - $date"$'\n\n'"- Merges ${version} hot-fix"
+new_entry="### [$version] - $date"$'\n\n'"- Merges ${actualVersion} hot-fix"
 
 # Verificar que el CHANGELOG exista
 if [[ ! -f "$CHANGELOG" ]]; then
