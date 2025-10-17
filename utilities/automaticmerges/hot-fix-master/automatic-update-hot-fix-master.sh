@@ -57,7 +57,7 @@ git pull
 actualVersion=$(get_version_from_branch)
 version=$(increment_version)
 date=$(date +%F)
-new_entry="### [$version] - $date"$'\n\n'"- Merges ${actualVersion} hot-fix"
+new_entry="### [$version] - $date"$'\n\n'"- Merges ${$actualVersion} hot-fix"
 
 # Verificar que el CHANGELOG exista
 if [[ ! -f "$CHANGELOG" ]]; then
