@@ -2,4 +2,4 @@
 git reset --hard HEAD~1
 git config --get alias.msave
 git config --global alias.<nombre> '<comando>'
-
+git merge --abort
