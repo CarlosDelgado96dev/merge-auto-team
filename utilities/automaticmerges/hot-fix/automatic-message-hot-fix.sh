@@ -61,6 +61,11 @@ get_version_from_branch() {
   return 0
 }
 
+echo "Cambiando de rama a hot-fix"
+git checkout hot-fix
+echo "Haciendo pull desde hot-fix"
+git pull
+
 merge_commits=$(git log hot-fix --first-parent --since="1 week ago" --merges --pretty=format:"%H")
 merge_entries=()
 has_new_merges=false
