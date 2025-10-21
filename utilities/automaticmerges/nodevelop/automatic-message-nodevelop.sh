@@ -54,6 +54,11 @@ get_version_from_branch() {
   return 0
 }
 
+echo "Cambiando de rama a maintenance"
+git checkout maintenance
+echo "Haciendo pull desde maintenance"
+git pull
+
 merge_commits=$(git log maintenance --first-parent --since="1 week ago" --merges --pretty=format:"%H")
 merge_entries=()
 has_new_merges=false
