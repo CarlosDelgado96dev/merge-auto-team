@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.18] - 2025-10-21
+
+- Refactor Scripts To Navegate To Correct Branchs (CHAPQA-1453)
+
 ### [1.10.15] - 2025-10-17
 
 - Merges 1.10.14 hot-fix
