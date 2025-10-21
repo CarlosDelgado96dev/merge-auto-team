@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.20] - 2025-10-21
+
+- Merges 1.10.19 hot-fix
+
 ### [1.10.19] - 2025-10-21
 
 - Change Buttons To Controlle The Specs (CHAPQA-1454)
@@ -429,6 +433,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.9.13] - 2025-10-21
+
+- Change Passwords On Users Pangea (CHAPQA-1455)
 
 ### [1.9.12] - 2025-10-21
 
