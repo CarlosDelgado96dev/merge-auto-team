@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.10.19] - 2025-10-21
+
+- Change Buttons To Controlle The Specs (CHAPQA-1454)
+- FIX: solution change page zoom
+
 ### [1.10.18] - 2025-10-21
 
 - Refactor Scripts To Navegate To Correct Branchs (CHAPQA-1453)
