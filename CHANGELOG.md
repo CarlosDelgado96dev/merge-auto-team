@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.2] - 2025-10-24
+
+- Merges 1.11.1 hot-fix
+
+### [1.11.1] - 2025-10-24
+
+- Update Users On Previous Ent (CHAPQA-1456)
+- ADD: add weekly merge complete
+
 ### [1.11.0] - 2025-10-24
 
 - New Minor Version Complete Weekly Merge
