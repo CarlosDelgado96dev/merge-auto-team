@@ -438,6 +438,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.10.0] - 2025-10-21
+
+- New Version Minor Complete Weekly Merge
+
 ### [1.9.13] - 2025-10-21
 
 - Change Passwords On Users Pangea (CHAPQA-1455)
