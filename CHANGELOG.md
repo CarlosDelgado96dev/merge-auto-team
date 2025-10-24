@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.0] - 2025-10-24
+
+- New Minor Version Complete Weekly Merge
+
 ### [1.10.20] - 2025-10-21
 
 - Merges 1.10.19 hot-fix
