@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.2] - 2025-10-24
+
+- Merges 1.11.1 hot-fix
+
 ### [1.11.1] - 2025-10-24
 
 - Update Users On Previous Ent (CHAPQA-1456)
@@ -442,6 +446,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.10.1] - 2025-10-24
+
+- Update Passwords On Spec Comercial (CHAPQA-1457)
+- ADD: weekly merge
 
 ### [1.10.0] - 2025-10-21
 
