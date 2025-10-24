@@ -451,6 +451,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.10.2] - 2025-10-24
+
+- UPDATE  the script
+
 ### [1.10.1] - 2025-10-24
 
 - Update Passwords On Spec Comercial (CHAPQA-1457)
