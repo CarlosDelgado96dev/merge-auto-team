@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.6] - 2025-10-27
+
+- Merges 1.11.5 hot-fix
+
 ### [1.11.5] - 2025-10-27
 
 - Update Controls In Specs (CHAPQA-1458)
