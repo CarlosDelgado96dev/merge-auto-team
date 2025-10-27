@@ -50,8 +50,6 @@ get_version_from_branch() {
   echo "$version"
   return 0
 }
-git push origin --follow-tags
-echo "Cambiando a la rama master..."
 git checkout master
 echo "git pull desde master"
 git pull
