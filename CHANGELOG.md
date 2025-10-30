@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.9] - 2025-10-30
+
+- Merges 1.11.8 hot-fix
+
 ### [1.11.4] - 2025-10-24
 
 - Merges 1.11.3 hot-fix
