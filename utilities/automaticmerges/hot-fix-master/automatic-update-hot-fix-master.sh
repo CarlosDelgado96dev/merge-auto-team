@@ -50,9 +50,7 @@ get_version_from_branch() {
   echo "$version"
   return 0
 }
-git checkout master
-echo "git pull desde master"
-git pull
+
 actualVersion=$(get_version_from_branch origin/master)
 version=$(increment_version)
 date=$(date +%F)
