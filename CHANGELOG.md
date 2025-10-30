@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.8] - 2025-10-30
+
+- Merges 1.11.7 hot-fix
+
 ### [1.11.7] - 2025-10-30
 
 - ADD: refactor controls to ver Detalles
@@ -466,6 +470,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.10.4] - 2025-10-30
+
+- ADD spec to the library
 
 ### [1.10.3] - 2025-10-27
 
