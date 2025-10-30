@@ -455,6 +455,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.10.4] - 2025-10-30
+
+- ADD spec to the library
+
 ### [1.10.3] - 2025-10-27
 
 - Update the scripts with close details
