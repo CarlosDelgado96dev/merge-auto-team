@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.7] - 2025-10-30
+
+- ADD: refactor controls to ver Detalles
+
 ### [1.11.6] - 2025-10-27
 
 - Merges 1.11.5 hot-fix
