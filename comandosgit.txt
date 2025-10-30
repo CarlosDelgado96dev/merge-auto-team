@@ -5,3 +5,4 @@ git config --global alias.<nombre> '<comando>'
 git merge --abort
 git status
 gitdededede
+dwjdwjwdjwdjjwdwjd
