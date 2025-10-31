@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.11] - 2025-10-31
+
+- update control to delete image files
+
 ### [1.11.10] - 2025-10-31
 
 - Update Controls In Specs (CHAPQA-1458)
