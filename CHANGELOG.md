@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.10] - 2025-10-31
+
+- Update Controls In Specs (CHAPQA-1458)
+- change 2 days for 1 week in automatic message
+- hot fixxxxx masterrrr update
+- ADD: refactor controls to ver Detalles
+
 ### [1.11.9] - 2025-10-30
 
 - Merges 1.11.8 hot-fix
