@@ -3,10 +3,6 @@ set -euo pipefail
 
 GIT_DIR=$(git rev-parse --git-dir 2>/dev/null) || { echo "No es un repo git"; exit 1; }
 
-echo "Renombrando el último commit a 'Merge branch hot-fix'..."  # <--- añadido
-git commit --amend -m "Merge branch 'hot-fix'"  # <--- añadido
-echo "[INFO] Último commit renombrado correctamente."  # <--- añadido
-
 CHANGELOG="./CHANGELOG.md"
 
 increment_version() {
