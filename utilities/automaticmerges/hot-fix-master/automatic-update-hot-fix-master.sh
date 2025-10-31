@@ -126,17 +126,20 @@ else
     # Tomar la versión 'theirs' (la rama que se está integrando: maintenance)
     git checkout --theirs -- .
 
-    image_files=$(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
+      # Detectar archivos rastreados que coincidan
+  mapfile -t image_files < <(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
 
-    if [[ -n "$image_files" ]]; then
-      echo "[INFO] Se detectaron archivos relacionados con IMAGE (Docker). Se aplicará manejo especial."
-      # Mantener la versión de master (HEAD) para esos archivos
-      git checkout HEAD -- $image_files
-
-      # Alternativamente, para eliminarlos del índice y del working tree, usar:
-      # git rm --cached --ignore-unmatch $image_files
-      # rm -f $image_files
-    fi
+  if (( ${#image_files[@]} )); then
+  echo "[INFO] Se detectaron ${#image_files[@]} archivos Docker. Eliminándolos del merge..."
+  # Quitar del índice (dejarán de estar rastreados en el commit de merge)
+  git rm --cached --ignore-unmatch -- "${image_files[@]}"
+  # Eliminar del working tree localmente
+  rm -f -- "${image_files[@]}"
+  # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
+  # echo -e "Dockerfile\n*.tar" >> .gitignore
+  # git add .gitignore
+  # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
+fi
 
     # Añadir los cambios y finalizar el merge
     git add -A
@@ -179,17 +182,20 @@ else
     # Tomar la versión 'theirs' (la rama que se está integrando: master)
     git checkout --theirs -- .
 
-    image_files=$(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
+      # Detectar archivos rastreados que coincidan
+  mapfile -t image_files < <(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
 
-    if [[ -n "$image_files" ]]; then
-      echo "[INFO] Se detectaron archivos relacionados con IMAGE (Docker). Se aplicará manejo especial."
-      # Mantener la versión de master (HEAD) para esos archivos
-      git checkout HEAD -- $image_files
-
-      # Alternativamente, para eliminarlos del índice y del working tree, usar:
-      # git rm --cached --ignore-unmatch $image_files
-      # rm -f $image_files
-    fi
+  if (( ${#image_files[@]} )); then
+  echo "[INFO] Se detectaron ${#image_files[@]} archivos Docker. Eliminándolos del merge..."
+  # Quitar del índice (dejarán de estar rastreados en el commit de merge)
+  git rm --cached --ignore-unmatch -- "${image_files[@]}"
+  # Eliminar del working tree localmente
+  rm -f -- "${image_files[@]}"
+  # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
+  # echo -e "Dockerfile\n*.tar" >> .gitignore
+  # git add .gitignore
+  # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
+fi
 
     # Añadir los cambios y finalizar el merge
     git add -A
