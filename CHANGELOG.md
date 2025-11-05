@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.12] - 2025-11-05
+
+- Merges 1.10.5 hot-fix
+
 ### [1.11.11] - 2025-10-31
 
 - update control to delete image files
