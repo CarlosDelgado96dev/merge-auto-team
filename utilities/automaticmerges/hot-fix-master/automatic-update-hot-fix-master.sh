@@ -51,7 +51,7 @@ get_version_from_branch() {
   return 0
 }
 
-actualVersion=$(get_version_from_branch origin/master)
+actualVersion=$(get_version_from_branch origin/hot-fix)
 version=$(increment_version)
 date=$(date +%F)
 new_entry="### [$version] - $date"$'\n\n'"- Merges ${actualVersion} hot-fix"
