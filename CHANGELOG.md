@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.14] - 2025-11-10
+
+- ADD: implement automatic expands version from master without develop
+
 ### [1.11.13] - 2025-11-10
 
 - Change the word 'hola' for 'adios'
