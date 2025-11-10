@@ -483,6 +483,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.10.6] - 2025-11-10
+
+- Add new controls git
+
 ### [1.10.5] - 2025-10-30
 
 - Ver Detalles Second Controller (CHAPQA-1459)
