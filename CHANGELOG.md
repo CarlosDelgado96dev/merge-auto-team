@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.13] - 2025-11-10
+
+- Change the word 'hola' for 'adios'
+- ADD: change the text in File
+
 ### [1.11.12] - 2025-11-05
 
 - Merges 1.10.5 hot-fix
