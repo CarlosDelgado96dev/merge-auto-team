@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.15] - 2025-11-10
+
+- Merges 1.10.6 hot-fix
+
 ### [1.11.14] - 2025-11-10
 
 - ADD: implement automatic expands version from master without develop
