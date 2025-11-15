@@ -1,15 +1,14 @@
 {
   "name": "merge-auto-team",
-  "version": "1.10.6",
+  "version": "1.10.7",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "uplog": "bash ./utilities/update-changelog.sh",
     "mergemaintenance": "bash ./utilities/automaticmerges/maintenance/automatic-message-maintenance.sh",
     "mergenodevelop": "bash ./utilities/automaticmerges/nodevelop/automatic-message-nodevelop.sh",
-    "mergehotfix-prod": "bash ./utilities/automaticmerges/hot-fix/automatic-message-hot-fix.sh",
-    "mergehotfix-master": "bash ./utilities/automaticmerges/hot-fix-master/automatic-message-hot-fix-master.sh",
-    "weeklymerge": "bash  ./utilities/automaticmerges/weeklymerge.sh"
+    "propvermaster": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master.sh",
+    "mergehotfix": "bash ./utilities/automaticmerges/hot-fix/automatic-message-hot-fix.sh"
   },
   "keywords": [],
   "author": "",

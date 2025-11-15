@@ -483,6 +483,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.10.7] - 2025-11-15
+
+- Fix package.json scripts to the project
+- FIX; copy actual automatic merge on this repository
+
 ### [1.10.6] - 2025-11-10
 
 - Add new controls git
