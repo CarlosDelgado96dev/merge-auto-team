@@ -483,6 +483,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.10.8] - 2025-11-15
+
+- ADD: script to package.json for execute
+- ADD: create bash master generate version without propagates develop
+
 ### [1.10.7] - 2025-11-15
 
 - Fix package.json scripts to the project
