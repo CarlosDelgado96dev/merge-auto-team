@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.16] - 2025-11-15
+
+- Merges 1.10.7 hot-fix
+
+### [1.11.15] - 2025-11-10
+
+- Merges 1.10.6 hot-fix
+
 ### [1.11.14] - 2025-11-10
 
 - ADD: implement automatic expands version from master without develop
@@ -482,6 +490,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.10.7] - 2025-11-15
+
+- Fix package.json scripts to the project
+- FIX; copy actual automatic merge on this repository
+
+### [1.10.6] - 2025-11-10
+
+- Add new controls git
 
 ### [1.10.5] - 2025-10-30
 

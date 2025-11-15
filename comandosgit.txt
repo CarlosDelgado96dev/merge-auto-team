@@ -6,3 +6,4 @@ git merge --abort
 git status
 gitdededede
 git push
+git lereleee
