@@ -51,6 +51,11 @@ get_version_from_branch() {
   return 0
 }
 
+echo "Valor actual (merge.ours.driver): $(git config --local --get merge.ours.driver || echo '<no definido>')"
+echo "Configurando merge.ours.driver=true (ámbito local)..."
+git config --local merge.ours.driver true
+echo "Nuevo valor (merge.ours.driver): $(git config --local --get merge.ours.driver)"
+
 actualVersion=$(get_version_from_branch origin/hot-fix)
 version=$(increment_version)
 date=$(date +%F)
