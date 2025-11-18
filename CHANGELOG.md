@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.11.23] - 2025-11-18
+
+- FIX: proove the .gitattributes in the repository
+
 ### [1.11.22] - 2025-11-18
 
 - Update Config In To The Git Atributes (CHAPQA-1461)
