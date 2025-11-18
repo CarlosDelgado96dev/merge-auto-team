@@ -107,168 +107,133 @@ if git commit -m "readme: changelog update"; then
   push_follow="$(git push origin --follow-tags)"
   echo "$push_follow"
 
-# ir a la rama maintenance
+# Merge master -> develop (descartar cambios en ficheros 'IMAGE' siempre)
 echo "Cambiando a la rama maintenance..."
 git checkout maintenance
 git pull
 echo "Hacemos git pull desde maintenance"
-echo "Uniendo la rama master a maintenance con merge --no-ff y estrategia 'theirs' para conflictos..."
-# Intento de merge preferiendo los cambios de maintenance en los hunks en conflicto
-if git merge --no-ff -s recursive -X theirs master -m "Merge master into maintenance "; then
-    declare -a image_files=()
-    while IFS= read -r -d '' f; do
-      if [[ "$(basename "$f")" == "IMAGE" ]]; then
-        image_files+=("$f")
-      fi
-    done < <(git ls-files -z)
+echo "Uniendo la rama master a maintenance con merge --no-commit --no-ff y estrategia 'theirs'..."
 
-    if (( ${#image_files[@]} )); then
-      echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Eliminándolos del merge..."
-      # Quitar del índice (dejarán de estar rastreados en el commit de merge)
-      git rm --cached --ignore-unmatch -- "${image_files[@]}"
-      # Eliminar del working tree localmente
-      rm -f -- "${image_files[@]}"
-      # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
-      # echo -e "*/IMAGE" >> .gitignore
-      # git add .gitignore
-      # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
-    else
-      echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
-    fi
-  echo "[INFO] Merge completado automáticamente (se han preferido los cambios de master en los hunks en conflicto)."
+# Aplicar merge al índice/working-tree pero NO crear commit automático
+if git merge --no-commit --no-ff -s recursive -X theirs master; then
+  echo "[INFO] Merge aplicado al índice (sin commit)."
 else
-  echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de master en los archivos en conflicto."
-
- # Comprobar si existen archivos en conflicto
-  conflict_files_count=$(git ls-files -u | awk '{print $4}' | sort -u | wc -l)
-  if [[ "$conflict_files_count" -gt 0 ]]; then
-    echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de maintenance..."
-
-    # Tomar la versión 'theirs' (la rama que se está integrando: master)
-    git checkout --theirs -- .
-
-    # Detectar archivos cuyo nombre base sea EXACTAMENTE 'IMAGE' (maneja espacios en nombres)
-    declare -a image_files=()
-    while IFS= read -r -d '' f; do
-      if [[ "$(basename "$f")" == "IMAGE" ]]; then
-        image_files+=("$f")
-      fi
-    done < <(git ls-files -z)
-
-    if (( ${#image_files[@]} )); then
-      echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Eliminándolos del merge..."
-      # Quitar del índice (dejarán de estar rastreados en el commit de merge)
-      git rm --cached --ignore-unmatch -- "${image_files[@]}"
-      # Eliminar del working tree localmente
-      rm -f -- "${image_files[@]}"
-      # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
-      # echo -e "*/IMAGE" >> .gitignore
-      # git add .gitignore
-      # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
-    else
-      echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
-    fi
-
-    # Añadir los cambios y finalizar el merge
-    git add -A
-    if git commit -m "Merge master into maintenance "; then
-      echo "[INFO] Conflictos resueltos: se ha commiteado tomando las versiones de maintenance."
-    else
-      echo "[ERROR] Falló el commit tras forzar 'theirs'. Revisa manualmente el repo."
-      exit 1
-    fi
-  else
-    echo "[ERROR] No se detectaron archivos en conflicto tras el intento de merge. Se abortará el merge para evitar estado inconsistente."
-    git merge --abort || true
-    exit 1
-  fi
+  echo "[WARN] Merge aplicado al índice con posibles conflictos (sin commit)."
 fi
 
-# push de maintenance con tags y merge
+# Detectar archivos cuyo nombre base sea EXACTAMENTE 'IMAGE' (soporta espacios)
+declare -a image_files=()
+while IFS= read -r -d '' f; do
+  if [[ "$(basename "$f")" == "IMAGE" ]]; then
+    image_files+=("$f")
+  fi
+done < <(git ls-files -z)
+
+if (( ${#image_files[@]} )); then
+  echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Se descartarán los cambios entrantes para estos archivos:"
+  for p in "${image_files[@]}"; do
+    echo "  - $p"
+    # Comprobar si el archivo existía en HEAD (nuestra rama antes del merge)
+    if git cat-file -e "HEAD:$p" 2>/dev/null; then
+      # Existía: conservar la versión 'ours' (rama destino) y añadirla al índice
+      git checkout --ours -- "$p"
+      git add -- "$p"
+      echo "    -> Conservada la versión 'ours' (se ignoraron los cambios entrantes)."
+    else
+      # No existía en HEAD: fue añadido por la rama entrante. Excluirlo del índice para que NO vaya en el commit.
+      git rm --cached --ignore-unmatch -- "$p"
+      # NOTA: NO borramos del working tree; el archivo permanecerá localmente como no rastreado.
+      echo "    -> Archivo introducido por la rama entrante. Excluido del índice (no se incluirá en el commit)."
+    fi
+  done
+else
+  echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
+fi
+
+# Si hay conflict files no resueltos y quieres forzar 'theirs' en otros, puedes:
+# if git ls-files -u | grep -q .; then
+#   git checkout --theirs -- .
+#   git add -A
+# fi
+
+# Finalizar el merge con el mismo mensaje de siempre
+commit_msg="Merge master into maintenance "
+git add -A
+if git commit -m "$commit_msg"; then
+  echo "[INFO] Commit de merge creado con mensaje: '$commit_msg'."
+else
+  echo "[ERROR] Falló el commit de merge. Revisa el estado del repo:"
+  git status --porcelain
+  exit 1
+fi
+
+# Push si procede
 echo "Enviando cambios de maintenance y etiquetas al repositorio remoto..."
 git push
 
 
 
 
-# ir a la rama develop
-echo "Cambiando a la rama maintenance..."
+# Merge master -> develop (descartar cambios en ficheros 'IMAGE' siempre)
+echo "Cambiando a la rama develop..."
 git checkout develop
 git pull
-echo "Hacemos git pull desde maintenance"
-echo "Uniendo la rama master a maintenance con merge --no-ff y estrategia 'theirs' para conflictos..."
-# Intento de merge preferiendo los cambios de master en los hunks en conflicto
-if git merge --no-ff -s recursive -X theirs master -m "Merge master into develop "; then
-  echo "[INFO] Merge completado automáticamente (se han preferido los cambios de master en los hunks en conflicto)."
-      # Detectar archivos cuyo nombre base sea EXACTAMENTE 'IMAGE' (maneja espacios en nombres)
-    declare -a image_files=()
-    while IFS= read -r -d '' f; do
-      if [[ "$(basename "$f")" == "IMAGE" ]]; then
-        image_files+=("$f")
-      fi
-    done < <(git ls-files -z)
+echo "Hacemos git pull desde develop"
+echo "Uniendo la rama master a develop con merge --no-commit --no-ff y estrategia 'theirs'..."
 
-    if (( ${#image_files[@]} )); then
-      echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Eliminándolos del merge..."
-      # Quitar del índice (dejarán de estar rastreados en el commit de merge)
-      git rm --cached --ignore-unmatch -- "${image_files[@]}"
-      # Eliminar del working tree localmente
-      rm -f -- "${image_files[@]}"
-      # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
-      # echo -e "*/IMAGE" >> .gitignore
-      # git add .gitignore
-      # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
-    else
-      echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
-    fi
+# Aplicar merge al índice/working-tree pero NO crear commit automático
+if git merge --no-commit --no-ff -s recursive -X theirs master; then
+  echo "[INFO] Merge aplicado al índice (sin commit)."
 else
-  echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de master en los archivos en conflicto."
-
-# Comprobar si existen archivos en conflicto
-  conflict_files_count=$(git ls-files -u | awk '{print $4}' | sort -u | wc -l)
-  if [[ "$conflict_files_count" -gt 0 ]]; then
-    echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de maintenance..."
-
-    # Tomar la versión 'theirs' (la rama que se está integrando: master)
-    git checkout --theirs -- .
-
-    # Detectar archivos cuyo nombre base sea EXACTAMENTE 'IMAGE' (maneja espacios en nombres)
-    declare -a image_files=()
-    while IFS= read -r -d '' f; do
-      if [[ "$(basename "$f")" == "IMAGE" ]]; then
-        image_files+=("$f")
-      fi
-    done < <(git ls-files -z)
-
-    if (( ${#image_files[@]} )); then
-      echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Eliminándolos del merge..."
-      # Quitar del índice (dejarán de estar rastreados en el commit de merge)
-      git rm --cached --ignore-unmatch -- "${image_files[@]}"
-      # Eliminar del working tree localmente
-      rm -f -- "${image_files[@]}"
-      # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
-      # echo -e "*/IMAGE" >> .gitignore
-      # git add .gitignore
-      # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
-    else
-      echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
-    fi
-
-    # Añadir los cambios y finalizar el merge
-    git add -A
-    if git commit -m "Merge master into develop "; then
-      echo "[INFO] Conflictos resueltos: se ha commiteado tomando las versiones de maintenance."
-    else
-      echo "[ERROR] Falló el commit tras forzar 'theirs'. Revisa manualmente el repo."
-      exit 1
-    fi
-  else
-    echo "[ERROR] No se detectaron archivos en conflicto tras el intento de merge. Se abortará el merge para evitar estado inconsistente."
-    git merge --abort || true
-    exit 1
-  fi
+  echo "[WARN] Merge aplicado al índice con posibles conflictos (sin commit)."
 fi
 
-# push de master con tags y merge
+# Detectar archivos cuyo nombre base sea EXACTAMENTE 'IMAGE' (soporta espacios)
+declare -a image_files=()
+while IFS= read -r -d '' f; do
+  if [[ "$(basename "$f")" == "IMAGE" ]]; then
+    image_files+=("$f")
+  fi
+done < <(git ls-files -z)
+
+if (( ${#image_files[@]} )); then
+  echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Se descartarán los cambios entrantes para estos archivos:"
+  for p in "${image_files[@]}"; do
+    echo "  - $p"
+    # Comprobar si el archivo existía en HEAD (nuestra rama antes del merge)
+    if git cat-file -e "HEAD:$p" 2>/dev/null; then
+      # Existía: conservar la versión 'ours' (rama destino) y añadirla al índice
+      git checkout --ours -- "$p"
+      git add -- "$p"
+      echo "    -> Conservada la versión 'ours' (se ignoraron los cambios entrantes)."
+    else
+      # No existía en HEAD: fue añadido por la rama entrante. Excluirlo del índice para que NO vaya en el commit.
+      git rm --cached --ignore-unmatch -- "$p"
+      # NOTA: NO borramos del working tree; el archivo permanecerá localmente como no rastreado.
+      echo "    -> Archivo introducido por la rama entrante. Excluido del índice (no se incluirá en el commit)."
+    fi
+  done
+else
+  echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
+fi
+
+# Si hay conflict files no resueltos y quieres forzar 'theirs' en otros, puedes:
+# if git ls-files -u | grep -q .; then
+#   git checkout --theirs -- .
+#   git add -A
+# fi
+
+# Finalizar el merge con el mismo mensaje de siempre
+commit_msg="Merge master into develop "
+git add -A
+if git commit -m "$commit_msg"; then
+  echo "[INFO] Commit de merge creado con mensaje: '$commit_msg'."
+else
+  echo "[ERROR] Falló el commit de merge. Revisa el estado del repo:"
+  git status --porcelain
+  exit 1
+fi
+
+# Push si procede
 echo "Enviando cambios de develop y etiquetas al repositorio remoto..."
 git push
