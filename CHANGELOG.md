@@ -483,6 +483,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.10.10] - 2025-11-18
+
+- DELETE: delete .gitattributes to the project
+
 ### [1.10.9] - 2025-11-18
 
 - ADD: prove in produccion IMAGE dont modify
