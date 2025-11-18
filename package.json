@@ -1,6 +1,6 @@
 {
   "name": "merge-auto-team",
-  "version": "1.11.24",
+  "version": "1.11.25",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,8 +9,7 @@
     "mergenodevelop": "bash ./utilities/automaticmerges/nodevelop/automatic-message-nodevelop.sh",
     "propvermaster": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master.sh",
     "propvermasternodev": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master-nodevelop.sh",
-    "mergehotfix": "bash ./utilities/automaticmerges/hot-fix/automatic-message-hot-fix.sh",
-    "configmergeours": "bash ./utilities/automaticmerges/config-local-merge-ours.sh"
+    "mergehotfix": "bash ./utilities/automaticmerges/hot-fix/automatic-message-hot-fix.sh"
   },
   "keywords": [],
   "author": "",
