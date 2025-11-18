@@ -112,52 +112,41 @@ echo "Cambiando a la rama maintenance..."
 git checkout maintenance
 git pull
 echo "Hacemos git pull desde maintenance"
-echo "Uniendo la rama master a maintenance con merge --no-ff y estrategia 'theirs' para conflictos..."
-# Intento de merge preferiendo los cambios de maintenance en los hunks en conflicto
-if git merge --no-ff -s recursive -X theirs master -m "Merge master into maintenance "; then
-  echo "[INFO] Merge completado automáticamente (se han preferido los cambios de master en los hunks en conflicto)."
+echo "[INFO] Guardando la versión ORIGINAL de IMAGE..."
+
+if [[ -f IMAGE ]]; then
+   cp IMAGE .IMAGE_BACKUP
+   IMAGE_EXISTS=1
 else
-  echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de master en los archivos en conflicto."
-
-  # Comprobar si existen archivos en conflicto
-  conflict_files_count=$(git ls-files -u | awk '{print $4}' | sort -u | wc -l)
-  if [[ "$conflict_files_count" -gt 0 ]]; then
-    echo "[INFO] Se han detectado $conflict_files_count archivos en conflicto. Forzando la versión de master..."
-    # Tomar la versión 'theirs' (la rama que se está integrando: maintenance)
-    git checkout --theirs -- .
-
-      # Detectar archivos rastreados que coincidan
-  mapfile -t image_files < <(git ls-files | grep -E '(^Dockerfile$|\.tar$)')
-
-  if (( ${#image_files[@]} )); then
-  echo "[INFO] Se detectaron ${#image_files[@]} archivos Docker. Eliminándolos del merge..."
-  # Quitar del índice (dejarán de estar rastreados en el commit de merge)
-  git rm --cached --ignore-unmatch -- "${image_files[@]}"
-  # Eliminar del working tree localmente
-  rm -f -- "${image_files[@]}"
-  # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
-  # echo -e "Dockerfile\n*.tar" >> .gitignore
-  # git add .gitignore
-  # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
+   IMAGE_EXISTS=0
 fi
-
-    # Añadir los cambios y finalizar el merge
-    git add -A
-    if git commit -m "Merge master into maintenance "; then
-      echo "[INFO] Conflictos resueltos: se ha commiteado tomando las versiones de maintenance."
-    else
-      echo "[ERROR] Falló el commit tras forzar 'theirs'. Revisa manualmente el repo."
-      exit 1
-    fi
-  else
-    echo "[ERROR] No se detectaron archivos en conflicto tras el intento de merge. Se abortará el merge para evitar estado inconsistente."
-    git merge --abort || true
-    exit 1
-  fi
+echo "Iniciando merge con master..."
+if git merge --no-ff -s recursive -X theirs master -m "Merge master into maintenance"; then
+   echo "[INFO] Merge completado automáticamente."
+else
+   echo "[WARN] Merge terminó en conflicto. Resolviendo con 'theirs'..."
+   conflict_files_count=$(git ls-files -u | awk '{print $4}' | sort -u | wc -l)
+   if [[ "$conflict_files_count" -gt 0 ]]; then
+       echo "[INFO] Conflictivos detectados ($conflict_files_count). Forzando 'theirs'..."
+       git checkout --theirs -- .
+       git add -A
+       git commit -m "Merge master into maintenance (conflictos resueltos)"
+   else
+       echo "[ERROR] Merge falló sin conflictos. Abortando..."
+       git merge --abort || true
+       exit 1
+   fi
 fi
-
-# push de maintenance con tags y merge
-echo "Enviando cambios de maintenance y etiquetas al repositorio remoto..."
+echo "[INFO] Restaurando el estado ORIGINAL de IMAGE si existía antes del merge..."
+if [[ "$IMAGE_EXISTS" -eq 1 ]]; then
+   cp .IMAGE_BACKUP IMAGE
+   git add IMAGE
+fi
+# Limpiar temporal SOLO si se creó
+#[[ -f .IMAGE_BACKUP ]] && rm -f .IMAGE_BACKUP
+echo "[INFO] Enmendando el commit de merge..."
+git commit --amend --no-edit
+echo "Subiendo cambios..."
 git push
 
 
