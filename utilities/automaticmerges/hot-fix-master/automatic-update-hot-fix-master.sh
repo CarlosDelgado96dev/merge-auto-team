@@ -115,6 +115,26 @@ echo "Hacemos git pull desde maintenance"
 echo "Uniendo la rama master a maintenance con merge --no-ff y estrategia 'theirs' para conflictos..."
 # Intento de merge preferiendo los cambios de maintenance en los hunks en conflicto
 if git merge --no-ff -s recursive -X theirs master -m "Merge master into maintenance "; then
+    declare -a image_files=()
+    while IFS= read -r -d '' f; do
+      if [[ "$(basename "$f")" == "IMAGE" ]]; then
+        image_files+=("$f")
+      fi
+    done < <(git ls-files -z)
+
+    if (( ${#image_files[@]} )); then
+      echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Eliminándolos del merge..."
+      # Quitar del índice (dejarán de estar rastreados en el commit de merge)
+      git rm --cached --ignore-unmatch -- "${image_files[@]}"
+      # Eliminar del working tree localmente
+      rm -f -- "${image_files[@]}"
+      # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
+      # echo -e "*/IMAGE" >> .gitignore
+      # git add .gitignore
+      # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
+    else
+      echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
+    fi
   echo "[INFO] Merge completado automáticamente (se han preferido los cambios de master en los hunks en conflicto)."
 else
   echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de master en los archivos en conflicto."
@@ -180,6 +200,27 @@ echo "Uniendo la rama master a maintenance con merge --no-ff y estrategia 'their
 # Intento de merge preferiendo los cambios de master en los hunks en conflicto
 if git merge --no-ff -s recursive -X theirs master -m "Merge master into develop "; then
   echo "[INFO] Merge completado automáticamente (se han preferido los cambios de master en los hunks en conflicto)."
+      # Detectar archivos cuyo nombre base sea EXACTAMENTE 'IMAGE' (maneja espacios en nombres)
+    declare -a image_files=()
+    while IFS= read -r -d '' f; do
+      if [[ "$(basename "$f")" == "IMAGE" ]]; then
+        image_files+=("$f")
+      fi
+    done < <(git ls-files -z)
+
+    if (( ${#image_files[@]} )); then
+      echo "[INFO] Se detectaron ${#image_files[@]} archivos llamados 'IMAGE'. Eliminándolos del merge..."
+      # Quitar del índice (dejarán de estar rastreados en el commit de merge)
+      git rm --cached --ignore-unmatch -- "${image_files[@]}"
+      # Eliminar del working tree localmente
+      rm -f -- "${image_files[@]}"
+      # Opcional: añadir reglas locales a .gitignore para evitar que se vuelvan a añadir
+      # echo -e "*/IMAGE" >> .gitignore
+      # git add .gitignore
+      # NOTA: no añadimos aquí un commit extra separado para .gitignore para evitar alterar flujo si no lo deseas
+    else
+      echo "[INFO] No se detectaron archivos llamados 'IMAGE'."
+    fi
 else
   echo "[WARN] El merge terminó en conflicto o falló. Se intentará resolver forzando las versiones de master en los archivos en conflicto."
 
