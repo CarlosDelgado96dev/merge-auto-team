@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.12.0] - 2025-11-18
+
+- Restore the original project in POS and FDC
+
+### [1.11.26] - 2025-11-18
+
+- Merges 1.10.10 hot-fix
+
 ### [1.11.25] - 2025-11-18
 
 - Merges 1.10.10 hot-fix
