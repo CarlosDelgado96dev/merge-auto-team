@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.12.5] - 2025-11-19
+
+- Add Prop Ver Master Without Develop In The Project (CHAPQA-1464)
+
 ### [1.12.4] - 2025-11-19
 
 - Merges 1.11.1 hot-fix
