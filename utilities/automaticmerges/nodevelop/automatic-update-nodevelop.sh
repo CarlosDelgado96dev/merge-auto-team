@@ -69,7 +69,4 @@ version_le() {
   echo "[OK] Proceso completado."
 
   
-  # push de master con tags y merge
-  echo "Enviando cambios de master y etiquetas al repositorio remoto..."
-  git push
 
