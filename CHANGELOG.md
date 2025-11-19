@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.12.5] - 2025-11-19
+
+- Add Prop Ver Master Without Develop In The Project (CHAPQA-1464)
+
+### [1.12.4] - 2025-11-19
+
+- Merges 1.11.1 hot-fix
+
 ### [1.12.3] - 2025-11-19
 
 - Fix Hotfix And Master Propagates Scripts (CHAPQA-1463)
@@ -535,6 +543,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.11.2] - 2025-11-19
+
+- Align branchs to te project with the same package (CHAPQA-1463)
 
 ### [1.11.1] - 2025-11-19
 
