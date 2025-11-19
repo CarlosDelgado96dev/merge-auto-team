@@ -536,6 +536,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.11.1] - 2025-11-19
+
+- Merge with master to align th project (CHAPQA-1463)
+
+### [1.11.0] - 2025-11-18
+
+- Restore the original project in PDV and FDC
+
+### [1.10.10] - 2025-11-18
+
+- DELETE: delete .gitattributes to the project
+
+### [1.10.9] - 2025-11-18
+
+- ADD: prove in produccion IMAGE dont modify
+- chore: keep local IMAGE on merges
+- ADD: image hot-fix
+
 ### [1.10.8] - 2025-11-15
 
 - ADD: script to package.json for execute
