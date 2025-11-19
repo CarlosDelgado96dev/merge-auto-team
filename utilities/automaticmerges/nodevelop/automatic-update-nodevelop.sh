@@ -63,7 +63,7 @@ version_le() {
   git checkout --theirs -- .
   git add -A
   echo "[INFO] Creando commit de merge..."
-  git commit -m "Merge master into maintenance"
+  git commit -m "Merge maintenance into master"
   echo "Subiendo cambios..."
   git push
   echo "[OK] Proceso completado."
