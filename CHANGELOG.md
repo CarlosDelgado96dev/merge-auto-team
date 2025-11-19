@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.12.2] - 2025-11-19
+
+- FIX: correct good merging into the project
+
 ### [1.12.1] - 2025-11-19
 
 - UPDATE: no develop in master
