@@ -536,6 +536,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Prod Environment
 
+### [1.11.1] - 2025-11-19
+
+- Merge with master to align th project (CHAPQA-1463)
+
 ### [1.11.0] - 2025-11-18
 
 - Restore the original project in PDV and FDC
