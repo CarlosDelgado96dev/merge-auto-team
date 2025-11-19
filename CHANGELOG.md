@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.12.3] - 2025-11-19
+
+- Fix Hotfix And Master Propagates Scripts (CHAPQA-1463)
+
+### [1.12.2] - 2025-11-19
+
+- FIX: correct good merging into the project
+
+### [1.12.1] - 2025-11-19
+
+- UPDATE: no develop in master
+- ADD: change automatic-update in no develop
+- ADD: recovery IMAGE and good merge
+
+### [1.12.0] - 2025-11-18
+
+- Restore the original project in POS and FDC
+
+### [1.11.26] - 2025-11-18
+
+- Merges 1.10.10 hot-fix
+
+### [1.11.25] - 2025-11-18
+
+- Merges 1.10.10 hot-fix
+
+### [1.11.24] - 2025-11-18
+
+- Merges 1.10.9 hot-fix
+
+### [1.11.23] - 2025-11-18
+
+- FIX: proove the .gitattributes in the repository
+
+### [1.11.22] - 2025-11-18
+
+- Update Config In To The Git Atributes (CHAPQA-1461)
+- chore: keep local IMAGE on merges
+- MOD: change image
+- create image in maintenance
+
+### [1.11.21] - 2025-11-18
+
+- Merges 1.10.8 hot-fix
+
+### [1.11.16] - 2025-11-15
+
+- Merges 1.10.7 hot-fix
+
+### [1.11.15] - 2025-11-10
+
+- Merges 1.10.6 hot-fix
+
 ### [1.11.14] - 2025-11-10
 
 - ADD: implement automatic expands version from master without develop
@@ -482,6 +535,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added release R25-03.
 
 ## Prod Environment
+
+### [1.11.1] - 2025-11-19
+
+- Merge with master to align th project (CHAPQA-1463)
 
 ### [1.11.0] - 2025-11-18
 
