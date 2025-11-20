@@ -109,6 +109,64 @@ fi
 newVersion=$(increment_version "$versionMaster")
 echo "La versión incrementada de master es $newVersion"
 
+echo "Cambiando a la rama develop..."
+git checkout develop
+echo "Hacemos git pull desde develop"
+git pull
 
-echo "Cambiando a la rama temporal..."
-git checkout newTest/CHAPQA-1466/implementNewAutoMergeInDevelop
+
+
+  echo "Generamos versión en develop"  # obtener fecha en formato dd/MM
+  fecha="$(date +'%d/%m')"
+  echo "$fecha"
+
+  # ejecutar npm version patch con mensaje que incluye la fecha y capturar la salida
+  if [[ "$semVerType" === "patch" ]]; then
+    npm_output="$(npm version "$newVersion" -m "Version %s - $fecha")"
+    echo "$npm_output"
+  else
+    npm_output="$(npm version minor -m "Version %s - $fecha")"
+    echo "$npm_output"
+  fi
+
+  
+  # pusheamos con follow-tags
+  push_follow="$(git push origin --follow-tags)"
+  echo "$push_follow"
+
+
+   # ir a la rama master
+  echo "Cambiando a la rama master..."
+  git checkout master
+  git pull
+  echo "Hacemos git pull desde master"
+  echo "Iniciando merge (sin commit) con develop..."
+  git merge --no-commit --no-ff develop 
+  echo "[INFO] Descartando IMAGE del merge (restaurándolo al estado antes del merge)..."
+  git restore --source=HEAD --staged --worktree -- IMAGE
+  echo "[INFO] Forzando preferencia por develop en el resto de archivos conflictivos..."
+  git checkout --theirs -- .
+  git add -A
+  echo "[INFO] Creando commit de merge..."
+  git commit -m "Merge develop into master"
+  echo "Subiendo cambios..."
+  git push
+  echo "[OK] Proceso completado."
+
+ # ir a la rama maintenance
+  echo "Cambiando a la rama maintenance..."
+  git checkout maintenance
+  git pull
+  echo "Hacemos git pull desde maintenance"
+  echo "Iniciando merge (sin commit) con maintenance..."
+  git merge --no-commit --no-ff master 
+  echo "[INFO] Descartando IMAGE del merge (restaurándolo al estado antes del merge)..."
+  git restore --source=HEAD --staged --worktree -- IMAGE
+  echo "[INFO] Forzando preferencia por master en el resto de archivos conflictivos..."
+  git checkout --theirs -- .
+  git add -A
+  echo "[INFO] Creando commit de merge..."
+  git commit -m "Merge master into maintenance"
+  echo "Subiendo cambios..."
+  git push
+  echo "[OK] Proceso completado."
