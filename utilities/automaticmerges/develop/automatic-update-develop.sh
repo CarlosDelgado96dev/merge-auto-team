@@ -75,11 +75,5 @@ fi
 
 echo "Cambiando a la rama temporal..."
 git checkout newTest/CHAPQA-1466/implementNewAutoMergeInDevelop
-git pull
-
-
-
-
-
 
 
