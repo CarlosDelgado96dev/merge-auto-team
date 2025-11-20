@@ -6,10 +6,43 @@ if git commit -m "readme: changelog update"; then
     echo "[ERROR] Falló el git commit. Revisa la configuración de git o los hooks."
   fi
 
-versionMaster=$(get_version_from_branch "master")
+increment_version() {
+  local version="${1:?Uso: increment_version <version> [patch|minor|major]}"
+  local part="${2:-patch}"   # patch por defecto
+  version="${version#v}"     # quitar posible prefijo 'v'
 
+  # Validar y extraer componentes (ignora sufijos pre-release/build)
+  if [[ $version =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)([-+].*)?$ ]]; then
+    local major=${BASH_REMATCH[1]}
+    local minor=${BASH_REMATCH[2]}
+    local patch=${BASH_REMATCH[3]}
+  else
+    echo "error: versión inválida: $version" >&2
+    return 1
+  fi
 
-versionMaintenance=$(get_version_from_branch "maintenance")
+  case "$part" in
+    patch)
+      patch=$((10#$patch + 1))
+      ;;
+    minor)
+      minor=$((10#$minor + 1))
+      patch=0
+      ;;
+    major)
+      major=$((10#$major + 1))
+      minor=0
+      patch=0
+      ;;
+    *)
+      echo "error: componente inválido (usa patch|minor|major)" >&2
+      return 2
+      ;;
+  esac
+
+  echo "$major.$minor.$patch"
+  return 0
+}
 
 
 normalize() { printf '%s' "${1#v}" | tr -d '[:space:]'; }
@@ -73,7 +106,9 @@ else
   exit 1
 fi
 
+newVersion=$(increment_version "$versionMaster")
+echo "La versión incrementada de master es $newVersion"
+
+
 echo "Cambiando a la rama temporal..."
 git checkout newTest/CHAPQA-1466/implementNewAutoMergeInDevelop
-
-
