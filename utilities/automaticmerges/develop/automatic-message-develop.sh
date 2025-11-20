@@ -59,7 +59,7 @@ git checkout develop
 echo "Haciendo pull desde develop"
 git pull
 
-merge_commits=$(git log maintenance --first-parent --since="1 week ago" --merges --pretty=format:"%H")
+merge_commits=$(git log develop --first-parent --since="1 week ago" --merges --pretty=format:"%H")
 merge_entries=()
 has_new_merges=false
 
@@ -101,7 +101,7 @@ done
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 # Obtener commits no merge de la rama actual en la última semana
-remote_commits=$(git log origin/maintenance --first-parent --since="1 week ago" --no-merges --pretty=format:"%H" --grep='Version [0-9]\+\.[0-9]\+\.[0-9]\+ - [0-9]\{2\}/[0-9]\{2\}' --grep="readme" --grep="Merge branch" --invert-grep)
+remote_commits=$(git log origin/develop --first-parent --since="1 week ago" --no-merges --pretty=format:"%H" --grep='Version [0-9]\+\.[0-9]\+\.[0-9]\+ - [0-9]\{2\}/[0-9]\{2\}' --grep="readme" --grep="Merge branch" --invert-grep)
 
 
 for commit_hash in $remote_commits; do
