@@ -7,6 +7,7 @@
     "uplog": "bash ./utilities/update-changelog.sh",
     "mergemaintenance": "bash ./utilities/automaticmerges/maintenance/automatic-message-maintenance.sh",
     "mergenodevelop": "bash ./utilities/automaticmerges/nodevelop/automatic-message-nodevelop.sh",
+    "mergedevelop": "bash ./utilities/automaticmerges/develop/automatic-message-develop.sh",
     "propvermaster": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master.sh",
     "propvermasternodev": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master-nodevelop.sh",
     "mergehotfix": "bash ./utilities/automaticmerges/hot-fix/automatic-message-hot-fix.sh"
