@@ -121,13 +121,11 @@ git pull
   echo "$fecha"
 
   # ejecutar npm version patch con mensaje que incluye la fecha y capturar la salida
-  if [[ "$semVerType" === "patch" ]]; then
-    npm_output="$(npm version "$newVersion" -m "Version %s - $fecha")"
-    echo "$npm_output"
-  else
-    npm_output="$(npm version minor -m "Version %s - $fecha")"
-    echo "$npm_output"
-  fi
+  case "$semVerType" in
+    patch)  npm version "$newVersion" -m "Version %s - $fecha" ;;
+    minor)  npm version minor -m "Version %s - $fecha" ;;
+    *) echo "Parámetro inválido" >&2; exit 1 ;;
+  esac
 
   
   # pusheamos con follow-tags
