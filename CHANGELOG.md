@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.12.9] - 2025-11-20
+
+- Implement New Auto Merge In Develop (CHAPQA-1466)
+- New Auto Merge From Develop Refactor Or New Test (CHAPQA-1470)
+- MOD: ultimate refactor on Develop new Test
+- MOD: modify script message from develop
+- MOD: change image develop
+
 ### [1.12.8] - 2025-11-20
 
 - Merges 1.11.2 hot-fix
