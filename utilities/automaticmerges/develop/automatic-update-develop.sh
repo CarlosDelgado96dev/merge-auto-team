@@ -99,8 +99,8 @@ echo "Hacemos git pull desde master"
 git fetch
 git pull
 
-if masterVersion=$(get_version_from_branch origin/master); then
-  echo "La versión de master es: $masterVersion"
+if versionMaster=$(get_version_from_branch origin/master); then
+  echo "La versión de master es: $versionMaster"
 else
   echo "Error: no se pudo obtener la versión de origin/master" >&2
   exit 1
