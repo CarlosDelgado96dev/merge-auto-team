@@ -155,4 +155,8 @@ echo
 
 echo "Proceso completado."
 
+echo "enviando archivo al script de Python"
+
+
+"C:/Users/cdelgadb/AppData/Local/Programs/Python/Python313/python.exe" ./utilities/automaticexcel/auto-excel.py "$found"
  
