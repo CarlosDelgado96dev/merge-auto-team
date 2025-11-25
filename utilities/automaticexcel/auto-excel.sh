@@ -149,7 +149,7 @@ echo "Extrayendo fallos del archivo..."
 
 echo
  
-awk '/Failures/,/Executed/ {print}' "$found"
+resultado="$(awk '/Failures/,/Executed/ {print}' "$found")"
  
 echo
 
@@ -158,5 +158,5 @@ echo "Proceso completado."
 echo "enviando archivo al script de Python"
 
 
-"C:/Users/cdelgadb/AppData/Local/Programs/Python/Python313/python.exe" ./utilities/automaticexcel/auto-excel.py "$found"
+"C:/Users/"$user"/AppData/Local/Programs/Python/Python313/python.exe" ./utilities/automaticexcel/auto-excel.py "$found" "$resultado"
  
