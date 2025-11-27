@@ -77,13 +77,11 @@ class Test:
 
 
     def toString(self):
-        return f"test: {self.front} SPA: {self.spa}  entorno: {self.ent} Mensaje: {self.message} SRC: {self.src} Date: {self.date} JOB: {self.job} Step: {self.step} Rentity: {self.responsibleEntity} User: {self.user} "
+        return f"test: {self.front} SPA: {self.spa}  entorno: {self.ent} SRC: {self.src} Date: {self.date} JOB: {self.job} Step: {self.step} Mensaje: {self.message} Rentity: {self.responsibleEntity} User: {self.user} "
 
 
 listTest = []
 
-print("archivo recibido: ",  ruta)
-#print("result recibido: ",  resultTxt)
 
 contador = 0
 for linea in resultTxt.splitlines():
@@ -118,17 +116,12 @@ for linea in resultTxt.splitlines():
         listTest.append(Test(spa_encontrado, ent_encontrado, front_code, None , None , None , None , None , None, None))
         contador += 1
         
-    
-    
-
-    
-
-print("Total de coincidencias ", str(contador))
 print("La lista tiene un total de elementos de " + str(len(listTest)) + " tests")
 
 def convertUserWindowsInUserExcel(user):
     if 'cdelgadb' in user:
         return 'Carlos Delgado Benito'
+
 
 Test.convertObjectForExcelLines(listTest)
 
