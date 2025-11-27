@@ -1,5 +1,6 @@
 import re
 import sys
+import os
 from datetime import datetime
 
 ruta = sys.argv[1]
@@ -8,11 +9,27 @@ ruta = sys.argv[1]
 
 resultTxt = sys.argv[2]
 
+partes = ruta.split("/")
+
+user = partes[2] 
+
+nombre_archivo = os.path.basename(ruta)  
+
+coincidencia = re.search(r"#(\d+)", nombre_archivo)
+if coincidencia:
+    execution = coincidencia.group(1)  # "1528"
+else:
+    execution = None
+
+print("user:", user)
+print("numero_ejecucion:", execution)
+
+
 class Test:
     ALLOWED_SPA = ('Ficha de Cliente', 'Pangea')
     ALLOWED_ENT = ('PROD', 'ASEG', 'ENT1', 'ENT2')
 
-    def __init__(self, spa: str, ent: str, front, message, src, date, job, step, responsibleEntity):
+    def __init__(self, spa: str, ent: str, front, message, src, date, job, step, responsibleEntity, user):
         if spa not in self.ALLOWED_SPA:
             raise ValueError(
                 f"Valor inválido para spa: {spa}. "
@@ -33,6 +50,7 @@ class Test:
         self.job = job
         self.step = step
         self.responsibleEntity = responsibleEntity
+        self.user = user
 
     def convertObjectForExcelLines(listObjects):
         for test in listTest:
@@ -48,16 +66,18 @@ class Test:
             fecha_actual = datetime.now()
             test.date = fecha_actual.strftime("%d/%m/%Y")
 
-            test.job = '1528'
+            test.job = execution
 
             test.step = '0'
 
             test.responsibleEntity = 'Application'
+
+            test.user = convertUserWindowsInUserExcel(user)
             
 
 
     def toString(self):
-        return f"test: {self.front} SPA: {self.spa}  entorno: {self.ent} Mensaje: {self.message} SRC: {self.src} Date: {self.date} JOB: {self.job} Step: {self.step} Rentity: {self.responsibleEntity} "
+        return f"test: {self.front} SPA: {self.spa}  entorno: {self.ent} Mensaje: {self.message} SRC: {self.src} Date: {self.date} JOB: {self.job} Step: {self.step} Rentity: {self.responsibleEntity} User: {self.user} "
 
 
 listTest = []
@@ -95,7 +115,7 @@ for linea in resultTxt.splitlines():
         
     
     if spa_encontrado and ent_encontrado and front_code:
-        listTest.append(Test(spa_encontrado, ent_encontrado, front_code, None , None , None , None , None , None))
+        listTest.append(Test(spa_encontrado, ent_encontrado, front_code, None , None , None , None , None , None, None))
         contador += 1
         
     
@@ -106,7 +126,12 @@ for linea in resultTxt.splitlines():
 print("Total de coincidencias ", str(contador))
 print("La lista tiene un total de elementos de " + str(len(listTest)) + " tests")
 
+def convertUserWindowsInUserExcel(user):
+    if 'cdelgadb' in user:
+        return 'Carlos Delgado Benito'
+
 Test.convertObjectForExcelLines(listTest)
+
 
 
 
