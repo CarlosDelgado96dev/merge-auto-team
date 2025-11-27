@@ -1,6 +1,10 @@
+import re
 import sys
+from datetime import datetime
 
 ruta = sys.argv[1]
+
+
 
 resultTxt = sys.argv[2]
 
@@ -8,7 +12,7 @@ class Test:
     ALLOWED_SPA = ('Ficha de Cliente', 'Pangea')
     ALLOWED_ENT = ('PROD', 'ASEG', 'ENT1', 'ENT2')
 
-    def __init__(self, spa: str, ent: str, front):
+    def __init__(self, spa: str, ent: str, front, message, src, date, job, step, responsibleEntity):
         if spa not in self.ALLOWED_SPA:
             raise ValueError(
                 f"Valor inválido para spa: {spa}. "
@@ -23,8 +27,37 @@ class Test:
         self.spa = spa
         self.ent = ent
         self.front = front
+        self.message = message
+        self.src = src
+        self.date = date
+        self.job = job
+        self.step = step
+        self.responsibleEntity = responsibleEntity
+
+    def convertObjectForExcelLines(listObjects):
+        for test in listTest:
+            if 'Ficha de Cliente' in test.spa:
+                test.spa = 'FDC'
+
+            if 'Pangea' in test.spa:
+                test.spa = 'PDV'
+
+            test.src = 'JOB'
+            
+            # Obtener la fecha actual
+            fecha_actual = datetime.now()
+            test.date = fecha_actual.strftime("%d/%m/%Y")
+
+            test.job = '1528'
+
+            test.step = '0'
+
+            test.responsibleEntity = 'Application'
+            
+
+
     def toString(self):
-        return f"{self.spa} en entorno {self.ent}"
+        return f"test: {self.front} SPA: {self.spa}  entorno: {self.ent} Mensaje: {self.message} SRC: {self.src} Date: {self.date} JOB: {self.job} Step: {self.step} Rentity: {self.responsibleEntity} "
 
 
 listTest = []
@@ -37,6 +70,7 @@ for linea in resultTxt.splitlines():
     print(linea)
     spa_encontrado = None
     ent_encontrado = None
+    front_code = None
     for spa in Test.ALLOWED_SPA:
         if spa in linea:
             spa_encontrado = spa
@@ -45,15 +79,37 @@ for linea in resultTxt.splitlines():
         if ent in linea:
             ent_encontrado = ent
             break
+
+    if 'FRONT' in linea:
+        # Busca algo que empiece por FRONT y llegue hasta el primer punto
+        match = re.search(r'(FRONT[^.]*)\.', linea)
+        if match:
+            front_code = match.group(1).strip()
+
+    if 'Failed' in linea:
+        match_failed = re.search(r'Failed:\s*(.+)', linea)
+        if match_failed:
+            message_failed = match_failed.group(1).strip()
+            if listTest:
+                listTest[-1].message = message_failed
+        
     
-    if spa_encontrado and ent_encontrado:
-        listTest.append(Test(spa_encontrado, ent_encontrado))
+    if spa_encontrado and ent_encontrado and front_code:
+        listTest.append(Test(spa_encontrado, ent_encontrado, front_code, None , None , None , None , None , None))
         contador += 1
+        
+    
+    
 
     
 
 print("Total de coincidencias ", str(contador))
 print("La lista tiene un total de elementos de " + str(len(listTest)) + " tests")
+
+Test.convertObjectForExcelLines(listTest)
+
+
+
 
 for test in listTest:
     print(test.toString())
