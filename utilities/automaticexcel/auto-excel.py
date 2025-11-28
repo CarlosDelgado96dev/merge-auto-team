@@ -2,24 +2,51 @@ import re
 import sys
 import os
 from datetime import datetime
+import pandas as pd
 
 ruta = sys.argv[1]
-
-
-
 resultTxt = sys.argv[2]
 
-partes = ruta.split("/")
+def sanitize_text(value):
+    if value is None:
+        return value
+    return ''.join(
+        ch for ch in value
+        if ch in ("\t", "\n", "\r") or ord(ch) >= 32
+    ).strip()
 
-user = partes[2] 
+def tests_to_dataframe(tests):
+    registros = []
+    for test in tests:
+        registros.append({
+            "FRONT": sanitize_text(test.front),
+            "SRC": sanitize_text(test.src),
+            "SPA": sanitize_text(test.spa),
+            "ENT": sanitize_text(test.ent),
+            "DATE": sanitize_text(test.date),
+            "JOB": sanitize_text(test.job),
+            "JOBS": sanitize_text(test.job),
+            "STEP": sanitize_text(test.step),
+            "RESPONSIBLE": sanitize_text(test.responsibleEntity),
+            "ERROR TYPE": "Element not rendered",
+            "ALLURE MESSAGE": sanitize_text(test.message),
+            "ANALYSIS": " ",
+            "STATUS": "0.Define",
+            "USUARIO": sanitize_text(test.user),
+        })
+    return pd.DataFrame(registros)
 
-nombre_archivo = os.path.basename(ruta)  
 
-coincidencia = re.search(r"#(\d+)", nombre_archivo)
-if coincidencia:
-    execution = coincidencia.group(1)  # "1528"
-else:
-    execution = None
+def convertUserAndExecution(ruta):
+    partes = ruta.split("/")
+    user = partes[2]
+    nombre_archivo = os.path.basename(ruta)
+    coincidencia = re.search(r"#(\d+)", nombre_archivo)
+    execution = coincidencia.group(1) if coincidencia else None
+    return user, execution
+
+user, execution = convertUserAndExecution(ruta)
+
 
 print("user:", user)
 print("numero_ejecucion:", execution)
@@ -126,9 +153,20 @@ def convertUserWindowsInUserExcel(user):
 Test.convertObjectForExcelLines(listTest)
 
 
+df = tests_to_dataframe(listTest)
+print(df)
 
 
+ruta_excel = os.path.join(f"C:/Users/{user}/Downloads", f"resultados_#{execution}.xlsx")
 
-for test in listTest:
-    print(test.toString())
+df.to_excel(ruta_excel, index=False, engine="openpyxl")
+
+# ALINEAR EN EL CENTRO DIRECTAMENTE AL CREARLO
+#with pd.ExcelWriter(ruta_excel, engine="xlsxwriter") as writer:
+#    df.to_excel(writer, index=False, sheet_name="Resultados")
+#    workbook = writer.book
+#    worksheet = writer.sheets["Resultados"]
+#    formato_centrado = workbook.add_format({"align": "center", "valign": "vcenter"})
+#    worksheet.set_column(0, df.shape[1] - 1, None, formato_centrado)
+#    worksheet.set_default_row(15, formato_centrado)
 
