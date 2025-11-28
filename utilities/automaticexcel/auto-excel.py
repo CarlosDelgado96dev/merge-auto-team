@@ -7,50 +7,6 @@ import pandas as pd
 ruta = sys.argv[1]
 resultTxt = sys.argv[2]
 
-def sanitize_text(value):
-    if value is None:
-        return value
-    return ''.join(
-        ch for ch in value
-        if ch in ("\t", "\n", "\r") or ord(ch) >= 32
-    ).strip()
-
-def tests_to_dataframe(tests):
-    registros = []
-    for test in tests:
-        registros.append({
-            "FRONT": sanitize_text(test.front),
-            "SRC": sanitize_text(test.src),
-            "SPA": sanitize_text(test.spa),
-            "ENT": sanitize_text(test.ent),
-            "DATE": sanitize_text(test.date),
-            "JOB": sanitize_text(test.job),
-            "JOBS": sanitize_text(test.job),
-            "STEP": sanitize_text(test.step),
-            "RESPONSIBLE": sanitize_text(test.responsibleEntity),
-            "ERROR TYPE": "Element not rendered",
-            "ALLURE MESSAGE": sanitize_text(test.message),
-            "ANALYSIS": " ",
-            "STATUS": "0.Define",
-            "USUARIO": sanitize_text(test.user),
-        })
-    return pd.DataFrame(registros)
-
-
-def convertUserAndExecution(ruta):
-    partes = ruta.split("/")
-    user = partes[2]
-    nombre_archivo = os.path.basename(ruta)
-    coincidencia = re.search(r"#(\d+)", nombre_archivo)
-    execution = coincidencia.group(1) if coincidencia else None
-    return user, execution
-
-user, execution = convertUserAndExecution(ruta)
-
-
-print("user:", user)
-print("numero_ejecucion:", execution)
-
 
 class Test:
     ALLOWED_SPA = ('Ficha de Cliente', 'Pangea')
@@ -106,6 +62,50 @@ class Test:
     def toString(self):
         return f"test: {self.front} SPA: {self.spa}  entorno: {self.ent} SRC: {self.src} Date: {self.date} JOB: {self.job} Step: {self.step} Mensaje: {self.message} Rentity: {self.responsibleEntity} User: {self.user} "
 
+
+def sanitize_text(value):
+    if value is None:
+        return value
+    return ''.join(
+        ch for ch in value
+        if ch in ("\t", "\n", "\r") or ord(ch) >= 32
+    ).strip()
+
+def tests_to_dataframe(tests):
+    registros = []
+    for test in tests:
+        registros.append({
+            "FRONT": sanitize_text(test.front),
+            "SRC": sanitize_text(test.src),
+            "SPA": sanitize_text(test.spa),
+            "ENT": sanitize_text(test.ent),
+            "DATE": sanitize_text(test.date),
+            "JOB": sanitize_text(test.job),
+            "JOBS": sanitize_text(test.job),
+            "STEP": sanitize_text(test.step),
+            "RESPONSIBLE": sanitize_text(test.responsibleEntity),
+            "ERROR TYPE": "Element not rendered",
+            "ALLURE MESSAGE": sanitize_text(test.message),
+            "ANALYSIS": " ",
+            "STATUS": "0.Define",
+            "USUARIO": sanitize_text(test.user),
+        })
+    return pd.DataFrame(registros)
+
+
+def convertUserAndExecution(ruta):
+    partes = ruta.split("/")
+    user = partes[2]
+    nombre_archivo = os.path.basename(ruta)
+    coincidencia = re.search(r"#(\d+)", nombre_archivo)
+    execution = coincidencia.group(1) if coincidencia else None
+    return user, execution
+
+user, execution = convertUserAndExecution(ruta)
+
+
+print("user:", user)
+print("numero_ejecucion:", execution)
 
 listTest = []
 
