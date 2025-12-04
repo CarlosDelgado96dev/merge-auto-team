@@ -3,6 +3,7 @@ import sys
 import os
 from datetime import datetime
 import pandas as pd
+from openpyxl import load_workbook
 
 ruta = sys.argv[1]
 resultTxt = sys.argv[2]
@@ -55,7 +56,7 @@ class Test:
 
             test.responsibleEntity = 'Application'
 
-            test.user = convertUserWindowsInUserExcel(user)
+            test.user = userSystemToUserInExcel(user)
             
 
 
@@ -145,9 +146,15 @@ for linea in resultTxt.splitlines():
         
 print("La lista tiene un total de elementos de " + str(len(listTest)) + " tests")
 
-def convertUserWindowsInUserExcel(user):
+def userSystemToUserInExcel(user):
     if 'cdelgadb' in user:
         return 'Carlos Delgado Benito'
+    
+    if 'smonfort' in user:
+        return 'Sergi Monfort Ferrer'
+    
+    if 'aclemens' in user:
+        return 'Adrián Clement Sax'
 
 
 Test.convertObjectForExcelLines(listTest)
@@ -159,7 +166,7 @@ print(df)
 
 ruta_excel = os.path.join(f"C:/Users/{user}/Downloads", f"resultados_#{execution}.xlsx")
 
-df.to_excel(ruta_excel, index=False, engine="openpyxl")
+#df.to_excel(ruta_excel, index=False, engine="openpyxl")
 
 # ALINEAR EN EL CENTRO DIRECTAMENTE AL CREARLO
 #with pd.ExcelWriter(ruta_excel, engine="xlsxwriter") as writer:
