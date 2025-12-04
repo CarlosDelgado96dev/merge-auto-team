@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 import pandas as pd
 from openpyxl import load_workbook
+from openpyxl.styles import Alignment
 
 ruta = sys.argv[1]
 resultTxt = sys.argv[2]
@@ -166,7 +167,22 @@ print(df)
 
 ruta_excel = os.path.join(f"C:/Users/{user}/Downloads", f"resultados_#{execution}.xlsx")
 
-#df.to_excel(ruta_excel, index=False, engine="openpyxl")
+df.to_excel(ruta_excel, index=False, engine="openpyxl")
+
+workbook = load_workbook(ruta_excel)
+sheet = workbook.active
+alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+
+for row in sheet.iter_rows(
+    min_row=1,
+    max_row=sheet.max_row,
+    min_col=1,
+    max_col=sheet.max_column,
+):
+    for cell in row:
+        cell.alignment = alignment
+
+workbook.save(ruta_excel)
 
 # ALINEAR EN EL CENTRO DIRECTAMENTE AL CREARLO
 #with pd.ExcelWriter(ruta_excel, engine="xlsxwriter") as writer:
@@ -176,4 +192,3 @@ ruta_excel = os.path.join(f"C:/Users/{user}/Downloads", f"resultados_#{execution
 #    formato_centrado = workbook.add_format({"align": "center", "valign": "vcenter"})
 #    worksheet.set_column(0, df.shape[1] - 1, None, formato_centrado)
 #    worksheet.set_default_row(15, formato_centrado)
-
