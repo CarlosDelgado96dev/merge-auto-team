@@ -245,7 +245,7 @@ def main():
 
         # Mensaje de Failed
         if 'Failed' in linea:
-            match_failed = re.search(r'Failed:\s*(.+)', linea)
+            match_failed = re.search(r'Failed:\s*(.+?)(?:\s*\(Step\b|\s*$)', linea)
             if match_failed:
                 message_failed = match_failed.group(1).strip()
                 if listTest:
