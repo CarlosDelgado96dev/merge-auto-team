@@ -81,7 +81,7 @@ def convertUserAndExecution(ruta: str):
 # =========================
 
 class Test:
-    ALLOWED_SPA = ('Ficha de Cliente', 'Pangea')
+    ALLOWED_SPA = ('Ficha de Cliente', 'Pangea', 'Jazztel')
     ALLOWED_ENT = ('PROD', 'ASEG', 'ENT1', 'ENT2')
 
     def __init__(self, spa: str, ent: str, front, message, src, date, job, step, responsibleEntity, user):
