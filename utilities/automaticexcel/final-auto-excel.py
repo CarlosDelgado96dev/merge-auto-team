@@ -123,7 +123,6 @@ class Test:
             test.date = fecha_actual.strftime("%d/%m/%Y")
 
             test.job = execution
-            test.step = '0'
             test.responsibleEntity = 'Application'
             test.user = userSystemToUserInExcel(user)
 
@@ -250,12 +249,18 @@ def main():
                 message_failed = match_failed.group(1).strip()
                 if listTest:
                     listTest[-1].message = message_failed
+        if 'Step' in linea:
+            match_step =  re.search(r'Step\s+(\d+)', linea)
+            if match_step:
+                step = match_step.group(1).strip()
+                if listTest:
+                    listTest[-1].step = step
 
         if spa_encontrado and ent_encontrado and front_code:
             listTest.append(Test(spa_encontrado, ent_encontrado, front_code,
                                  None, None, None, None, None, None, None))
             contador += 1
-
+        
     print("La lista tiene un total de elementos de " + str(len(listTest)) + " tests")
 
     # 4.7 Completar campos para Excel
