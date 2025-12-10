@@ -11,7 +11,7 @@
     "propvermaster": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master.sh",
     "propvermasternodev": "bash ./utilities/automaticmerges/hot-fix-master/automatic-update-hot-fix-master-nodevelop.sh",
     "mergehotfix": "bash ./utilities/automaticmerges/hot-fix/automatic-message-hot-fix.sh",
-    "autoexcel": " bash ./utilities/automaticexcel/auto-excel.sh"
+    "autoexcel": "python ./utilities/automaticexcel/final-auto-excel.py"
   },
   "keywords": [],
   "author": "",
