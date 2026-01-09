@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Non-Prod Environment
 
+### [1.12.10] - 2026-01-09
+
+- New Test Auto Excel (CHAPQA-1473)
+- MOD: finally edition fetch in repository
+
 ### [1.12.9] - 2025-11-20
 
 - Implement New Auto Merge In Develop (CHAPQA-1466)
