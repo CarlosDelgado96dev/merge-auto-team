@@ -7,7 +7,8 @@ from pathlib import Path
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
-
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Alignment, PatternFill, Font
 
 # =========================
 # 1. DETECCIÓN USUARIO Y DOWNLOADS
@@ -76,6 +77,24 @@ def convertUserAndExecution(ruta: str):
     return user, execution
 
 
+def extraer_bloques_failures(contenido):
+    """
+    Extrae todos los bloques desde 'Failures' hasta 'Executed'
+    y los devuelve como un único texto concatenado.
+    """
+    bloques = []
+
+    # Regex: desde Failures hasta Executed (incluyéndolo)
+    patron = re.compile(
+        r'Failures[\s\S]*?Executed.*?$',
+        re.IGNORECASE | re.MULTILINE
+    )
+
+    for match in patron.finditer(contenido):
+        bloques.append(match.group())
+
+    return "\n\n".join(bloques)
+
 # =========================
 # 3. LÓGICA DE NEGOCIO (TU CÓDIGO)
 # =========================
@@ -115,6 +134,9 @@ class Test:
 
             if 'Pangea' in test.spa:
                 test.spa = 'PDV'
+
+            if 'Jazztel' in test.spa:
+                test.spa = 'PDV-MM'
 
             test.src = 'JOB'
             
@@ -205,6 +227,14 @@ def main():
     # 4.4 Leer contenido del archivo
     with ruta_archivo.open('r', encoding='utf-8', errors='replace') as f:
         contenido = f.read()
+        contenido_failures = extraer_bloques_failures(contenido)
+
+        if not contenido_failures:
+            print("No se encontraron bloques de Failures.", file=sys.stderr)
+            sys.exit(1)
+
+        print("Bloques de Failures detectados:\n")
+        print(contenido_failures)
 
     # 4.5 Obtener user y execution desde la ruta
     user, execution = convertUserAndExecution(str(ruta_archivo))
@@ -215,59 +245,103 @@ def main():
     print("user:", user)
     print("numero_ejecucion:", execution)
 
-    # 4.6 Parsear contenido y rellenar listTest
     listTest = []
     contador = 0
 
-    for linea in contenido.splitlines():
-        spa_encontrado = None
-        ent_encontrado = None
-        front_code = None
-
-        # Buscar SPA
+    current_spa = None
+    current_ent = None
+    current_front = None
+    current_message = None
+    current_step = None
+    isIncompleteMessage = False
+    
+    for linea in contenido_failures.splitlines():
+    
+    
+        # SPA
         for spa in Test.ALLOWED_SPA:
             if spa in linea:
-                spa_encontrado = spa
+                current_spa = spa
                 break
-
-        # Buscar ENT
+            
+        # ENT
         for ent in Test.ALLOWED_ENT:
             if ent in linea:
-                ent_encontrado = ent
+                current_ent = ent
                 break
-
+            
         # FRONT
         if 'FRONT' in linea:
             match = re.search(r'(FRONT[^.]*)\.', linea)
             if match:
-                front_code = match.group(1).strip()
+                current_front = match.group(1).strip()
 
-        # Mensaje de Failed
+        if isIncompleteMessage:
+            # Elimina identificadores tipo [chrome #01-2]
+            linea_limpia = re.sub(r'\[chrome\s*#\d+-\d+\]', '', linea)
+        
+            if 'Step' in linea_limpia:
+                match_step = re.search(r'\(Step\s*\d+\)', linea_limpia)
+                if match_step:
+                    current_message += ' ' + linea_limpia[:match_step.start()].strip()
+                    isIncompleteMessage = False
+            else:
+                current_message += ' ' + linea_limpia.strip()
+        
+
+        # Failed
         if 'Failed' in linea:
-            match_failed = re.search(r'Failed:\s*(.+?)(?:\s*\(Step\b|\s*$)', linea)
+            match_failed = re.search(
+                r'Failed:\s*(.+)(?:\s*\(Step\s*(\d+)\))?',
+                linea
+            )
             if match_failed:
-                message_failed = match_failed.group(1).strip()
-                if listTest:
-                    listTest[-1].message = message_failed
-        if 'Step' in linea:
-            match_step =  re.search(r'Step\s+(\d+)', linea)
-            if match_step:
-                step = match_step.group(1).strip()
-                if listTest:
-                    listTest[-1].step = step
+                current_message = match_failed.group(1).strip()
+                if 'Step' not in linea:
+                    isIncompleteMessage = True
 
-        if spa_encontrado and ent_encontrado and front_code:
-            listTest.append(Test(spa_encontrado, ent_encontrado, front_code,
-                                 None, None, None, None, None, None, None))
+        
+        if 'Step' in linea:
+            match_step = re.search(r'\(Step\s*(\d+)\)', linea)
+            if match_step: 
+                current_step = match_step.group(1)
+
+    
+        # Cuando ya tenemos todo → crear Test
+        if all([current_spa, current_ent, current_front, current_message, current_step]):
+            current_message = re.sub(r'\(Step\s*\d+\).*', '', current_message).strip()
+            listTest.append(Test(
+                current_spa,
+                current_ent,
+                current_front,
+                current_message,
+                None,
+                None,
+                None,
+                current_step,
+                None,
+                None
+            ))
             contador += 1
+    
+            # Reset estado
+            current_spa = None
+            current_ent = None
+            current_front = None
+            current_message = None
+            current_step = None
+    
         
     print("La lista tiene un total de elementos de " + str(len(listTest)) + " tests")
-
     # 4.7 Completar campos para Excel
     Test.convertObjectForExcelLines(listTest, execution, user)
 
     # 4.8 Pasar a DataFrame
     df = tests_to_dataframe(listTest)
+
+    # ORDENAR POR ALLURE MESSAGE
+    df = df.sort_values(by="ALLURE MESSAGE", ascending=True)
+
     print(df)
 
     # 4.9 Ruta del Excel de salida
@@ -276,11 +350,14 @@ def main():
     # 4.10 Guardar Excel
     df.to_excel(ruta_excel, index=False, engine="openpyxl")
 
-    # 4.11 Formato (alineación)
+    # 4.11 Formato (alineación) + Autofiltro en cabeceras + color cabeceras
+
+
     workbook = load_workbook(ruta_excel)
     sheet = workbook.active
     alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
 
+    # Aplicar alineación a todas las celdas
     for row in sheet.iter_rows(
         min_row=1,
         max_row=sheet.max_row,
@@ -290,8 +367,50 @@ def main():
         for cell in row:
             cell.alignment = alignment
 
+    # Altura algo mayor para la cabecera
+    sheet.row_dimensions[1].height = 22
+
+    # 1) AJUSTAR ANCHO BASE DE TODAS LAS COLUMNAS (ej. 15)
+    for col_idx in range(1, sheet.max_column + 1):
+        col_letter = get_column_letter(col_idx)
+        sheet.column_dimensions[col_letter].width = 15
+
+    # 2) BUSCAR LA COLUMNA 'ALLURE MESSAGE' Y PONERLA A 25
+    header_row = sheet[1]  # fila de cabeceras
+    allure_col_index = None
+
+    for cell in header_row:
+        if cell.value == "ALLURE MESSAGE":
+            allure_col_index = cell.column  # índice numérico de columna
+            break
+
+    if allure_col_index is not None:
+        allure_col_letter = get_column_letter(allure_col_index)
+        sheet.column_dimensions[allure_col_letter].width = 45  # ancho especial para ALLURE MESSAGE
+
+    # FORMATO CABECERAS (fila 1): fondo azul oscuro y texto en blanco
+    header_fill = PatternFill(
+        start_color="000080",
+        end_color="000080",
+        fill_type="solid"
+    )
+    header_font = Font(color="FFFFFF", bold=True)
+
+    for cell in sheet[1]:  # fila 1 completa (cabeceras)
+        cell.fill = header_fill
+        cell.font = header_font
+
+    # ACTIVAR FILTROS EN LA FILA DE CABECERAS
+    max_row = sheet.max_row
+    max_col = sheet.max_column
+    last_col_letter = get_column_letter(max_col)
+    data_range = f"A1:{last_col_letter}{max_row}"
+    sheet.auto_filter.ref = data_range
+
     workbook.save(ruta_excel)
     print(f"Excel generado en: {ruta_excel}")
+
+
 
 
 if __name__ == "__main__":
