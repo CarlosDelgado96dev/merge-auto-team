@@ -5,6 +5,9 @@ GIT_DIR=$(git rev-parse --git-dir 2>/dev/null) || { echo "No es un repo git"; ex
 
 CHANGELOG="./CHANGELOG.md"
 
+git fetch
+echo "Comando git fetch realizado correctamente"
+
 increment_version() {
   if command -v jq >/dev/null 2>&1; then
     last_version=$(jq -r '.version' package.json 2>/dev/null)
@@ -53,6 +56,8 @@ get_version_from_branch() {
 
   echo "Cambiando a la rama master..."
   git checkout master
+  echo "Hacemos git pull desde master"
+  git pull
 
 actualVersion=$(get_version_from_branch origin/hot-fix)
 version=$(increment_version)
